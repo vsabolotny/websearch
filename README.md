@@ -35,11 +35,11 @@ npm install
 
 ### 2. Configure your search (`src/config.ts`)
 
-- **`is24Geocode`** — numeric IS24 region id. Find it by running a Gewerbe search on
-  immobilienscout24.de for your city and copying the `geocodes=` value from the URL.
-  (Default `1276003001` = Berlin.)
-- **`kleinanzeigenLocationId`** — search on kleinanzeigen.de and read the `l<id>` from the
-  URL (default `3331` = Berlin). Adjust `kleinanzeigenRadiusKm`.
+- **`is24Lat` / `is24Lon` / `is24RadiusKm`** — IS24 searches in a radius around a point.
+  Set your city-center coordinates and radius. (Default = München, 10 km.)
+- **`kleinanzeigenLocationId`** — look it up at
+  `https://www.kleinanzeigen.de/s-ort-empfehlungen.json?query=<city>` or read the `l<id>`
+  from a search URL (default `6411` = München). Adjust `kleinanzeigenRadiusKm`.
 - **`maxPriceEur` / `minAreaSqm` / `maxAreaSqm`** — optional caps. IS24 retail listings are
   quoted per m²; the total is approximated as €/m² × m².
 - **`kleinanzeigenQueries`** — keyword searches for the chair-rental side.

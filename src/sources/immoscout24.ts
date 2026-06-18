@@ -66,10 +66,11 @@ function toListing(item: Is24Item): Listing | null {
   };
 }
 
-async function fetchPage(realEstateType: string, geocode: string, page: number): Promise<Is24ListResponse> {
+async function fetchPage(realEstateType: string, cfg: SearchConfig, page: number): Promise<Is24ListResponse> {
+  const geo = `${cfg.is24Lat};${cfg.is24Lon};${cfg.is24RadiusKm}.0`;
   const url =
-    `${BASE}/search/list?searchType=region&realestatetype=${encodeURIComponent(realEstateType)}` +
-    `&geocodes=${encodeURIComponent(geocode)}&pagenumber=${page}&pagesize=20`;
+    `${BASE}/search/list?searchType=radius&realestatetype=${encodeURIComponent(realEstateType)}` +
+    `&geocoordinates=${encodeURIComponent(geo)}&pagenumber=${page}&pagesize=20`;
   const res = await fetch(url, {
     method: "POST",
     headers: { ...HEADERS, "Content-Type": "application/json" },
@@ -86,10 +87,10 @@ export async function fetchListings(cfg: SearchConfig = config): Promise<Listing
   const out: Listing[] = [];
   const seen = new Set<string>();
   for (const type of cfg.is24RealEstateTypes) {
-    const first = await fetchPage(type, cfg.is24Geocode, 1);
+    const first = await fetchPage(type, cfg, 1);
     const pages = Math.min(first.numberOfPages ?? 1, MAX_PAGES);
     for (let page = 1; page <= pages; page++) {
-      const data = page === 1 ? first : await fetchPage(type, cfg.is24Geocode, page);
+      const data = page === 1 ? first : await fetchPage(type, cfg, page);
       for (const r of data.resultListItems ?? []) {
         if (r.type !== "EXPOSE_RESULT" || !r.item) continue;
         const listing = toListing(r.item);

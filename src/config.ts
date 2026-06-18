@@ -1,19 +1,23 @@
 /**
  * Search configuration. Edit the region and caps to match what you're looking for.
  *
- * IS24 `geocode` is a numeric region id in IS24's hierarchy. The default below is
- * Berlin (1276003001). To find yours: run a Gewerbe search on immobilienscout24.de
- * for your city and copy the `geocodes=` value out of the resulting URL.
+ * IS24 uses a radius search around a point: set the city-center latitude/longitude
+ * and a radius in km. Look up coordinates for any city (e.g. via Google Maps).
  *
- * Kleinanzeigen uses a numeric location id in its search URLs (e.g. l3331 = Berlin).
- * Find yours by searching on kleinanzeigen.de and reading the `l<id>` in the URL.
+ * Kleinanzeigen uses a numeric location id in its search URLs (e.g. l6411 = München).
+ * Find yours via https://www.kleinanzeigen.de/s-ort-empfehlungen.json?query=<city>
+ * or by reading the `l<id>` from a search URL on kleinanzeigen.de.
  */
 export interface SearchConfig {
   regionLabel: string;
 
   // --- ImmobilienScout24 (commercial spaces to open your own salon) ---
-  /** IS24 mobile-API numeric geocode for the region, e.g. "1276003001" (Berlin). */
-  is24Geocode: string;
+  /** City-center latitude for the IS24 radius search. */
+  is24Lat: number;
+  /** City-center longitude for the IS24 radius search. */
+  is24Lon: number;
+  /** Search radius in km around the IS24 center point. */
+  is24RadiusKm: number;
   /** Commercial real-estate types to watch. "store" = retail/Ladenfläche (best for a salon). */
   is24RealEstateTypes: string[];
 
@@ -35,12 +39,14 @@ export interface SearchConfig {
 }
 
 export const config: SearchConfig = {
-  regionLabel: "Berlin",
+  regionLabel: "München",
 
-  is24Geocode: "1276003001",
+  is24Lat: 48.1374,
+  is24Lon: 11.5755,
+  is24RadiusKm: 10,
   is24RealEstateTypes: ["store"],
 
-  kleinanzeigenLocationId: 3331,
+  kleinanzeigenLocationId: 6411,
   kleinanzeigenRadiusKm: 20,
   kleinanzeigenQueries: ["friseur stuhlmiete", "friseur laden", "kosmetik stuhlmiete"],
 
