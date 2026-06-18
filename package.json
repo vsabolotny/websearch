@@ -1,0 +1,22 @@
+{
+  "name": "salon-room-monitor",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Monitors ImmobilienScout24 + Kleinanzeigen for hairdressing salon spaces and alerts via Telegram",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "is24": "tsx src/sources/immoscout24.ts",
+    "kleinanzeigen": "tsx src/sources/kleinanzeigen.ts",
+    "notify-test": "tsx src/notify/telegram.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "@types/node": "^22.10.2"
+  }
+}
