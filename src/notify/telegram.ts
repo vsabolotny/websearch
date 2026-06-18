@@ -2,6 +2,11 @@ import type { Listing } from "../types.js";
 
 const API = "https://api.telegram.org";
 
+/** True when both Telegram credentials are present in the environment. */
+export function telegramConfigured(): boolean {
+  return Boolean(process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID);
+}
+
 function creds(): { token: string; chatId: string } {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;

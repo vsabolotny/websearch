@@ -50,7 +50,7 @@ export const config: SearchConfig = {
   kleinanzeigenRadiusKm: 20,
   kleinanzeigenQueries: ["friseur stuhlmiete", "friseur laden", "kosmetik stuhlmiete"],
 
-  maxPriceEur: null,
+  maxPriceEur: 2000,
   minAreaSqm: null,
   maxAreaSqm: 200,
 };

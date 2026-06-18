@@ -2,8 +2,11 @@
 
 Watches **ImmobilienScout24** (commercial spaces to open your own salon) and **eBay
 Kleinanzeigen** (chair/room rentals inside existing salons — "Stuhlmiete") for new
-hairdressing listings in your region, and pings you on **Telegram** when something new
-appears. Runs for free on a schedule via GitHub Actions.
+hairdressing listings in your region, and alerts you via **Telegram** and/or an **email
+report** when something new appears. Runs for free on a schedule via GitHub Actions.
+
+Two report modes: **new** (only listings unseen since the last run — the default) and
+**full** (the whole current list on demand).
 
 ## How it works
 
@@ -22,7 +25,8 @@ Each source is one adapter in `src/sources/`, so adding more portals later is on
 | `src/sources/immoscout24.ts` | IS24 commercial listings via the mobile JSON API. |
 | `src/sources/kleinanzeigen.ts` | Kleinanzeigen Stuhlmiete/salon listings via HTML. |
 | `src/state.ts` | Dedup state (`state/seen.json`). |
-| `src/notify/telegram.ts` | Telegram delivery. |
+| `src/notify/telegram.ts` | Telegram delivery (per-listing). |
+| `src/notify/email.ts` | Email report delivery (digest) via Gmail SMTP. |
 | `src/index.ts` | Orchestrator. |
 
 ## Setup
@@ -40,8 +44,9 @@ npm install
 - **`kleinanzeigenLocationId`** — look it up at
   `https://www.kleinanzeigen.de/s-ort-empfehlungen.json?query=<city>` or read the `l<id>`
   from a search URL (default `6411` = München). Adjust `kleinanzeigenRadiusKm`.
-- **`maxPriceEur` / `minAreaSqm` / `maxAreaSqm`** — optional caps. IS24 retail listings are
-  quoted per m²; the total is approximated as €/m² × m².
+- **`maxPriceEur` / `minAreaSqm` / `maxAreaSqm`** — caps (default: ≤ €2,000, ≤ 200 m²). IS24
+  retail listings are quoted per m²; the total is approximated as €/m² × m². Listings whose
+  price isn't shown are kept (so you don't miss ads that hide the rent).
 - **`kleinanzeigenQueries`** — keyword searches for the chair-rental side.
 
 ### 3. Create a Telegram bot
@@ -59,17 +64,37 @@ export TELEGRAM_CHAT_ID=987654
 npm run notify-test   # should DM you a test message
 ```
 
-## Running
+Telegram and email are both optional and independent — configure either, both, or neither.
+
+### 4. Email reports (optional, Gmail SMTP)
+
+1. On the sending Google account, enable 2-Step Verification, then create an
+   **App Password** (Google Account → Security → App passwords).
+2. Set the recipients as a comma-separated list.
+
+```bash
+export GMAIL_USER=you@gmail.com
+export GMAIL_APP_PASSWORD="abcd efgh ijkl mnop"   # the 16-char app password
+export REPORT_EMAILS="you@gmail.com, partner@example.com"
+npm run email-test   # should email a sample report to the recipients
+```
+
+## Running & report modes
 
 ```bash
 npm run is24           # just the IS24 adapter (prints listings)
 npm run kleinanzeigen  # just the Kleinanzeigen adapter
-npm start              # full run: gather → filter → dedupe → alert
+npm start              # MODE=new (default): report only new listings
+MODE=full npm start    # report the whole current list (on-demand digest)
 ```
 
-- **First run** seeds `state/seen.json` silently (no alert spam) and, from then on, only
-  **new** listings trigger a Telegram message.
-- Without Telegram env vars, `npm start` does a **dry run**: it prints what it *would*
+- **`new`** (default) — only listings unseen since the last run. Telegram sends one message
+  per listing; email sends a single digest. The **first** `new` run seeds `state/seen.json`
+  silently (no alert spam); after that only genuinely new listings are reported.
+- **`full`** — every current match, regardless of history. Email sends the whole list; if
+  there are more than 15, Telegram sends a single summary (pointing to the email) instead of
+  spamming. Use this for a catch-up of what's currently on the market.
+- With **no** channel configured, `npm start` does a **dry run**: prints what it *would*
   send and does not modify state.
 
 ## Scheduling (GitHub Actions)
@@ -78,9 +103,12 @@ npm start              # full run: gather → filter → dedupe → alert
 `state/seen.json` back to the repo so dedup survives between runs.
 
 1. Push this repo to GitHub.
-2. **Settings → Secrets and variables → Actions** → add `TELEGRAM_BOT_TOKEN` and
-   `TELEGRAM_CHAT_ID`.
+2. **Settings → Secrets and variables → Actions** → add the secrets you want:
+   `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `GMAIL_USER`, `GMAIL_APP_PASSWORD`,
+   `REPORT_EMAILS`.
 3. **Actions** tab → run *Salon-room monitor* once via **Run workflow** to seed state.
+   The **Run workflow** button has a **mode** dropdown (`new` / `full`) for on-demand full
+   reports; the scheduled runs always use `new`.
 
 ## Notes & limits
 

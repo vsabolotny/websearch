@@ -1,8 +1,9 @@
 import { config } from "./config.js";
-import type { Listing } from "./types.js";
+import type { Listing, ReportMode } from "./types.js";
 import { applyFilters } from "./filter.js";
 import { isNew, loadState, markSeen, saveState } from "./state.js";
-import { notifyListing, notifyText } from "./notify/telegram.js";
+import { notifyListing, notifyText, telegramConfigured } from "./notify/telegram.js";
+import { sendReport, emailConfigured } from "./notify/email.js";
 import { fetchListings as fetchIs24 } from "./sources/immoscout24.js";
 import { fetchListings as fetchKleinanzeigen } from "./sources/kleinanzeigen.js";
 
@@ -11,7 +12,10 @@ const SOURCES: { name: string; fetch: () => Promise<Listing[]> }[] = [
   { name: "Kleinanzeigen", fetch: fetchKleinanzeigen },
 ];
 
-const hasCreds = Boolean(process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID);
+/** "full" reports every current match; "new" (default) reports only unseen listings. */
+const MODE: ReportMode = process.env.MODE === "full" ? "full" : "new";
+// Above this count we don't spam Telegram one-by-one; we send a single summary instead.
+const TELEGRAM_INDIVIDUAL_LIMIT = 15;
 
 async function gather(): Promise<Listing[]> {
   const all: Listing[] = [];
@@ -27,43 +31,68 @@ async function gather(): Promise<Listing[]> {
   return all;
 }
 
-async function main(): Promise<void> {
-  const state = await loadState();
-  const listings = applyFilters(await gather());
-  const fresh = listings.filter((l) => isNew(state, l));
+/** Deliver a report to every configured channel. */
+async function dispatch(report: Listing[]): Promise<void> {
+  if (emailConfigured()) {
+    try {
+      await sendReport(report, { mode: MODE, regionLabel: config.regionLabel });
+      console.log(`Emailed report of ${report.length} listing(s).`);
+    } catch (e) {
+      console.error("Email report failed:", (e as Error).message);
+    }
+  }
 
-  // First ever run: seed state silently so we don't blast every existing listing.
-  if (state.wasEmpty) {
-    listings.forEach((l) => markSeen(state, l));
+  if (telegramConfigured()) {
+    if (report.length > TELEGRAM_INDIVIDUAL_LIMIT) {
+      await notifyText(
+        `📋 ${report.length} Inserate in ${config.regionLabel}` +
+          (emailConfigured() ? " — vollständiger Report per E-Mail." : "."),
+      );
+    } else {
+      for (const l of report) {
+        try {
+          await notifyListing(l);
+          await new Promise((r) => setTimeout(r, 1200)); // Telegram rate-limit headroom
+        } catch (e) {
+          console.error(`Failed to notify ${l.url}:`, (e as Error).message);
+        }
+      }
+    }
+  }
+}
+
+async function main(): Promise<void> {
+  console.log(`Mode: ${MODE}`);
+  const state = await loadState();
+  const matches = applyFilters(await gather());
+
+  // First ever run in "new" mode: seed silently so we don't blast every existing listing.
+  if (state.wasEmpty && MODE === "new") {
+    matches.forEach((l) => markSeen(state, l));
     await saveState(state);
-    console.log(`Seeded ${listings.length} existing listings (no alerts on first run).`);
-    if (hasCreds) {
+    console.log(`Seeded ${matches.length} existing listings (no alerts on first run).`);
+    if (telegramConfigured()) {
       await notifyText(
         `✅ Salon-Monitor gestartet für ${config.regionLabel}. ` +
-          `Beobachte ${listings.length} Inserate — ab jetzt nur noch neue.`,
+          `Beobachte ${matches.length} Inserate — ab jetzt nur noch neue.`,
       );
     }
     return;
   }
 
-  console.log(`${fresh.length} new listing(s).`);
+  const report = MODE === "full" ? matches : matches.filter((l) => isNew(state, l));
+  console.log(`Reporting ${report.length} listing(s) (${MODE}).`);
 
-  if (!hasCreds) {
-    // Dry run: show what would be sent, but DON'T persist — so nothing is missed once configured.
-    for (const l of fresh) console.log(`NEW  [${l.source}] ${l.title} — ${l.url}`);
-    console.warn("TELEGRAM_BOT_TOKEN/CHAT_ID not set: dry run, state not saved.");
+  if (!telegramConfigured() && !emailConfigured()) {
+    for (const l of report) console.log(`  [${l.source}] ${l.title} — ${l.url}`);
+    console.warn("No notification channel configured: dry run, state not saved.");
     return;
   }
 
-  for (const l of fresh) {
-    try {
-      await notifyListing(l);
-      markSeen(state, l);
-      await new Promise((r) => setTimeout(r, 1200)); // Telegram rate-limit headroom
-    } catch (e) {
-      console.error(`Failed to notify ${l.url}:`, (e as Error).message);
-    }
-  }
+  await dispatch(report);
+
+  // Record everything we've now seen so future "new" runs stay correct.
+  matches.forEach((l) => markSeen(state, l));
   await saveState(state);
   console.log("Done.");
 }

@@ -9,14 +9,17 @@
     "is24": "tsx src/sources/immoscout24.ts",
     "kleinanzeigen": "tsx src/sources/kleinanzeigen.ts",
     "notify-test": "tsx src/notify/telegram.ts",
+    "email-test": "tsx src/notify/email.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "cheerio": "^1.0.0"
+    "cheerio": "^1.0.0",
+    "nodemailer": "^6.9.16"
   },
   "devDependencies": {
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
-    "@types/node": "^22.10.2"
+    "@types/node": "^22.10.2",
+    "@types/nodemailer": "^6.4.17"
   }
 }

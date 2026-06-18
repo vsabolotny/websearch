@@ -1,5 +1,8 @@
 export type Source = "immoscout24" | "kleinanzeigen";
 
+/** What a run reports: "new" = only listings unseen since last run; "full" = all current matches. */
+export type ReportMode = "new" | "full";
+
 /** A normalized real-estate listing, shared across all source adapters. */
 export interface Listing {
   source: Source;
