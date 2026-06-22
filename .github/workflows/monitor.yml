@@ -43,13 +43,16 @@ jobs:
           REPORT_EMAILS: ${{ secrets.REPORT_EMAILS }}
         run: npm start
 
-      - name: Persist dedup state
+      - name: Persist run state
+        # Commit both the dedup state and the Kleinanzeigen enrichment cache so the
+        # next scheduled run reuses them (runners are ephemeral; without this the
+        # cache is empty every run and re-fetches every ad's detail page).
         run: |
-          if [[ -n "$(git status --porcelain state/seen.json)" ]]; then
+          if [[ -n "$(git status --porcelain state/)" ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add state/seen.json
-            git commit -m "chore: update seen listings [skip ci]"
+            git add state/
+            git commit -m "chore: update run state [skip ci]"
             git push
           else
             echo "No state changes."
