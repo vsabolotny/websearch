@@ -1,4 +1,4 @@
-import { config } from "./config.js";
+import { config, type SearchConfig, type SearchProfile } from "./config.js";
 import type { Listing, ReportMode } from "./types.js";
 import { applyFilters } from "./filter.js";
 import { isNew, loadState, markSeen, saveState } from "./state.js";
@@ -7,7 +7,7 @@ import { sendReport, emailConfigured } from "./notify/email.js";
 import { fetchListings as fetchIs24 } from "./sources/immoscout24.js";
 import { fetchListings as fetchKleinanzeigen } from "./sources/kleinanzeigen.js";
 
-const SOURCES: { name: string; fetch: () => Promise<Listing[]> }[] = [
+const SOURCES: { name: string; fetch: (p: SearchProfile, cfg?: SearchConfig) => Promise<Listing[]> }[] = [
   { name: "ImmobilienScout24", fetch: fetchIs24 },
   { name: "Kleinanzeigen", fetch: fetchKleinanzeigen },
 ];
@@ -19,13 +19,15 @@ const TELEGRAM_INDIVIDUAL_LIMIT = 15;
 
 async function gather(): Promise<Listing[]> {
   const all: Listing[] = [];
-  for (const s of SOURCES) {
-    try {
-      const listings = await s.fetch();
-      console.log(`${s.name}: ${listings.length} listings`);
-      all.push(...listings);
-    } catch (e) {
-      console.error(`${s.name} failed:`, (e as Error).message);
+  for (const profile of config.profiles) {
+    for (const s of SOURCES) {
+      try {
+        const listings = await s.fetch(profile);
+        console.log(`${profile.key}/${s.name}: ${listings.length} listings`);
+        all.push(...listings);
+      } catch (e) {
+        console.error(`${profile.key}/${s.name} failed:`, (e as Error).message);
+      }
     }
   }
   return all;
@@ -64,7 +66,7 @@ async function dispatch(report: Listing[]): Promise<void> {
 async function main(): Promise<void> {
   console.log(`Mode: ${MODE}`);
   const state = await loadState();
-  const matches = applyFilters(await gather());
+  const matches = applyFilters(await gather(), config.profiles);
 
   // First ever run in "new" mode: seed silently so we don't blast every existing listing.
   if (state.wasEmpty && MODE === "new") {

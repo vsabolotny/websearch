@@ -1,12 +1,18 @@
-import { config, type SearchConfig } from "./config.js";
 import type { Listing } from "./types.js";
+import type { SearchProfile } from "./config.js";
 
-/** Apply the shared price/area caps. Listings with unknown values pass (we don't drop on missing data). */
-export function applyFilters(listings: Listing[], cfg: SearchConfig = config): Listing[] {
+/**
+ * Apply each listing's profile caps. Listings with unknown price/area pass (we don't drop
+ * on missing data). A listing whose profile has no caps defined is dropped.
+ */
+export function applyFilters(listings: Listing[], profiles: SearchProfile[]): Listing[] {
+  const capsByKey = new Map(profiles.map((p) => [p.key, p.filters]));
   return listings.filter((l) => {
-    if (cfg.maxPriceEur != null && l.priceEur != null && l.priceEur > cfg.maxPriceEur) return false;
-    if (cfg.minAreaSqm != null && l.areaSqm != null && l.areaSqm < cfg.minAreaSqm) return false;
-    if (cfg.maxAreaSqm != null && l.areaSqm != null && l.areaSqm > cfg.maxAreaSqm) return false;
+    const caps = capsByKey.get(l.profile);
+    if (!caps) return false;
+    if (caps.maxPriceEur != null && l.priceEur != null && l.priceEur > caps.maxPriceEur) return false;
+    if (caps.minAreaSqm != null && l.areaSqm != null && l.areaSqm < caps.minAreaSqm) return false;
+    if (caps.maxAreaSqm != null && l.areaSqm != null && l.areaSqm > caps.maxAreaSqm) return false;
     return true;
   });
 }

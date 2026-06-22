@@ -6,6 +6,8 @@ export type ReportMode = "new" | "full";
 /** A normalized real-estate listing, shared across all source adapters. */
 export interface Listing {
   source: Source;
+  /** Which search profile matched this listing, e.g. "room". */
+  profile: string;
   /** Source-native id, unique within that source. */
   id: string;
   title: string;
@@ -17,6 +19,8 @@ export interface Listing {
   areaSqm: number | null;
   address: string | null;
   url: string;
+  /** Amenity flags from description enrichment (Kleinanzeigen only; undefined elsewhere). */
+  tags?: AmenityTags;
 }
 
 /** Which informational amenities a listing's text mentions. Only true flags are set. */

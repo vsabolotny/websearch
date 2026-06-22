@@ -88,6 +88,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     [
       {
         source: "kleinanzeigen",
+        profile: "room",
         id: "test",
         title: "Testinserat: Friseur Stuhlmiete",
         price: "750 €",
