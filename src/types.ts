@@ -19,6 +19,20 @@ export interface Listing {
   url: string;
 }
 
+/** Which informational amenities a listing's text mentions. Only true flags are set. */
+export interface AmenityTags {
+  window?: boolean;
+  transit?: boolean;
+  alwaysAccessible?: boolean;
+}
+
+/** Keyword lists used to detect amenities in free-text descriptions (matched case-insensitively). */
+export interface AmenityKeywords {
+  window: string[];
+  transit: string[];
+  alwaysAccessible: string[];
+}
+
 /** Unique dedup key across sources. */
 export function listingKey(l: Pick<Listing, "source" | "id">): string {
   return `${l.source}:${l.id}`;
