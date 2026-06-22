@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import type { Listing, ReportMode } from "../types.js";
+import { amenitySummary } from "../amenities.js";
 
 const SOURCE_LABEL: Record<Listing["source"], string> = {
   immoscout24: "ImmobilienScout24",
@@ -27,6 +28,8 @@ function meta(l: Listing): string {
   if (l.price) parts.push(l.price);
   if (l.areaSqm != null) parts.push(`${l.areaSqm} m²`);
   if (l.address) parts.push(l.address);
+  const flags = amenitySummary(l.tags);
+  if (flags) parts.push(flags);
   return parts.join(" · ");
 }
 
