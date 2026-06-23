@@ -327,6 +327,13 @@
       "tags": {
         "window": true
       }
+    },
+    "3442707464": {
+      "areaSqm": null,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
     }
   }
 }
