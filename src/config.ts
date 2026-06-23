@@ -4,6 +4,7 @@
  *
  * IS24 uses a radius search around a point: set the city-center latitude/longitude and a
  * radius in km. Kleinanzeigen uses a numeric location id in its search URLs (l6411 = München).
+ * immosuchmaschine and MatchOffice address the city by a URL slug (`citySlug`, e.g. "muenchen").
  */
 import type { AmenityKeywords } from "./types.js";
 
@@ -25,6 +26,10 @@ export interface SearchProfile {
   is24RealEstateTypes: string[];
   /** Kleinanzeigen keyword searches for this profile. */
   kleinanzeigenQueries: string[];
+  /** immosuchmaschine categories to query, e.g. ["gewerbeimmobilien-mieten"]. Empty = skip. */
+  immosuchmaschineCategories?: string[];
+  /** MatchOffice categories to query, e.g. ["buro"]. Empty = skip (office space has no price/area). */
+  matchofficeCategories?: string[];
   /** When true, fetch Kleinanzeigen detail pages to fill area + amenity flags. */
   enrichAmenities: boolean;
 }
@@ -38,6 +43,8 @@ export interface SearchConfig {
   is24RadiusKm: number;
   kleinanzeigenLocationId: number;
   kleinanzeigenRadiusKm: number;
+  /** City URL slug for immosuchmaschine + MatchOffice, e.g. "muenchen". */
+  citySlug: string;
 
   /** Keyword lists for amenity detection (shared across profiles). */
   amenityKeywords: AmenityKeywords;
@@ -54,6 +61,7 @@ export const config: SearchConfig = {
 
   kleinanzeigenLocationId: 6411,
   kleinanzeigenRadiusKm: 20,
+  citySlug: "muenchen",
 
   amenityKeywords: {
     window: ["fenster", "tageslicht", "lichtdurchflutet", "natürliches licht"],
@@ -80,6 +88,10 @@ export const config: SearchConfig = {
         "behandlungsraum",
         "gewerberaum friseur",
       ],
+      // Newest commercial listings, sorted newest-first; the €600 cap keeps only small/cheap rooms.
+      immosuchmaschineCategories: ["gewerbeimmobilien-mieten"],
+      // Dormant: MatchOffice office space has no price/area, so it can't honor the room caps.
+      matchofficeCategories: [],
       enrichAmenities: true,
     },
   ],

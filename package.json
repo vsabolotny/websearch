@@ -8,6 +8,8 @@
     "start": "tsx src/index.ts",
     "is24": "tsx src/sources/immoscout24.ts",
     "kleinanzeigen": "tsx src/sources/kleinanzeigen.ts",
+    "immosuchmaschine": "tsx src/sources/immosuchmaschine.ts",
+    "matchoffice": "tsx src/sources/matchoffice.ts",
     "notify-test": "tsx src/notify/telegram.ts",
     "email-test": "tsx src/notify/email.ts",
     "test": "node --import tsx --test \"src/**/*.test.ts\"",
