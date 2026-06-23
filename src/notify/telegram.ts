@@ -33,10 +33,10 @@ function formatListing(l: Listing): string {
   const meta = parts.length ? `\n${escapeHtml(parts.join(" · "))}` : "";
   const addr = l.address ? `\n📍 ${escapeHtml(l.address)}` : "";
   const flags = amenitySummary(l.tags);
-  const flagLine = flags ? `\n${flags}` : "";
+  const flagLine = flags ? `\n${escapeHtml(flags)}` : "";
   return (
     `🏠 <b>${escapeHtml(l.title)}</b>${meta}${addr}${flagLine}\n` +
-    `<i>${SOURCE_LABEL[l.source]}</i> — <a href="${l.url}">Inserat öffnen</a>`
+    `<i>${SOURCE_LABEL[l.source]}</i> — <a href="${escapeHtml(l.url)}">Inserat öffnen</a>`
   );
 }
 

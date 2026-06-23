@@ -37,7 +37,10 @@ export interface AmenityKeywords {
   alwaysAccessible: string[];
 }
 
-/** Unique dedup key across sources. */
-export function listingKey(l: Pick<Listing, "source" | "id">): string {
-  return `${l.source}:${l.id}`;
+/**
+ * Unique dedup key. Namespaced by profile so the same ad found by two profiles is
+ * tracked independently (otherwise a second profile would never alert on a shared ad).
+ */
+export function listingKey(l: Pick<Listing, "profile" | "source" | "id">): string {
+  return `${l.profile}:${l.source}:${l.id}`;
 }

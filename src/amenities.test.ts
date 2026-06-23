@@ -18,6 +18,11 @@ test("matchAmenities sets nothing when no keyword matches", () => {
   assert.deepEqual(matchAmenities("Schöner Laden in guter Lage.", kw), {});
 });
 
+test("matchAmenities tolerates a missing keyword list", () => {
+  const partial = { window: ["fenster"] } as unknown as AmenityKeywords;
+  assert.deepEqual(matchAmenities("Heller Raum mit Fenster", partial), { window: true });
+});
+
 test("amenitySummary lists only the true flags in fixed order", () => {
   assert.equal(amenitySummary({ window: true, alwaysAccessible: true }), "🪟 Fenster · 🔑 24/7");
 });

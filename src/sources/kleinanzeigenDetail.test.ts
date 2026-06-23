@@ -22,3 +22,8 @@ test("parseAreaFromText reads m² and qm", () => {
 test("parseAreaFromText returns null when no area present", () => {
   assert.equal(parseAreaFromText("Schöner Raum, Preis VB"), null);
 });
+
+test("parseAreaFromText treats a dot with 1-2 digits as a decimal, not thousands", () => {
+  assert.equal(parseAreaFromText("1.5 m²"), 1.5);
+  assert.equal(parseAreaFromText("1.500 m²"), 1500);
+});

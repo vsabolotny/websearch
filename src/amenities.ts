@@ -3,7 +3,8 @@ import type { AmenityKeywords, AmenityTags } from "./types.js";
 /** Set a flag for each amenity whose keyword list has a substring match in `text`. */
 export function matchAmenities(text: string, kw: AmenityKeywords): AmenityTags {
   const hay = text.toLowerCase();
-  const has = (list: string[]): boolean => list.some((k) => hay.includes(k.toLowerCase()));
+  const has = (list: string[] | undefined): boolean =>
+    list ? list.some((k) => hay.includes(k.toLowerCase())) : false;
   const tags: AmenityTags = {};
   if (has(kw.window)) tags.window = true;
   if (has(kw.transit)) tags.transit = true;
