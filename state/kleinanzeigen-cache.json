@@ -29,10 +29,24 @@
       "areaSqm": null,
       "tags": {}
     },
+    "3378268323": {
+      "areaSqm": null,
+      "tags": {
+        "window": true,
+        "transit": true,
+        "alwaysAccessible": true
+      }
+    },
     "3381120055": {
       "areaSqm": 69,
       "tags": {
         "window": true
+      }
+    },
+    "3382594157": {
+      "areaSqm": 35,
+      "tags": {
+        "transit": true
       }
     },
     "3388120003": {
@@ -43,6 +57,13 @@
     },
     "3388226226": {
       "areaSqm": 107,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3389809381": {
+      "areaSqm": 60,
       "tags": {
         "window": true,
         "transit": true
@@ -136,6 +157,21 @@
         "transit": true
       }
     },
+    "3427147507": {
+      "areaSqm": 94.85,
+      "tags": {}
+    },
+    "3427209386": {
+      "areaSqm": 36,
+      "tags": {}
+    },
+    "3429855412": {
+      "areaSqm": 130,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
     "3432270111": {
       "areaSqm": null,
       "tags": {
@@ -166,16 +202,40 @@
         "transit": true
       }
     },
+    "3438411374": {
+      "areaSqm": null,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3438512430": {
+      "areaSqm": null,
+      "tags": {}
+    },
     "3438534212": {
       "areaSqm": 57,
       "tags": {
         "transit": true
       }
     },
+    "3439012020": {
+      "areaSqm": 45,
+      "tags": {}
+    },
+    "3439061705": {
+      "areaSqm": null,
+      "tags": {}
+    },
     "3439168564": {
       "areaSqm": 65,
       "tags": {
         "window": true,
+        "transit": true
+      }
+    },
+    "3439191952": {
+      "areaSqm": 25,
+      "tags": {
         "transit": true
       }
     },
@@ -188,6 +248,13 @@
     "3440597006": {
       "areaSqm": null,
       "tags": {
+        "transit": true
+      }
+    },
+    "3440735821": {
+      "areaSqm": null,
+      "tags": {
+        "window": true,
         "transit": true
       }
     },
