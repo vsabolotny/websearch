@@ -1,0 +1,229 @@
+{
+  "keywordsHash": "{\"window\":[\"fenster\",\"tageslicht\",\"lichtdurchflutet\",\"natürliches licht\"],\"transit\":[\"u-bahn\",\"s-bahn\",\"öpnv\",\"öffentliche\",\"bus\",\"tram\",\"straßenbahn\",\"haltestelle\",\"anbindung\",\"verkehrsanbindung\",\"bahnhof\",\"zentral\"],\"alwaysAccessible\":[\"24 stunden\",\"24/7\",\"24h\",\"rund um die uhr\",\"jederzeit zugang\",\"jederzeit zugäng\",\"eigener schlüssel\",\"eigenen schlüssel\",\"schlüssel\",\"wochenende\",\"nachts\"]}",
+  "entries": {
+    "2850294171": {
+      "areaSqm": 53,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3196363656": {
+      "areaSqm": null,
+      "tags": {}
+    },
+    "3304146925": {
+      "areaSqm": null,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3336750556": {
+      "areaSqm": 50,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3348752004": {
+      "areaSqm": null,
+      "tags": {}
+    },
+    "3381120055": {
+      "areaSqm": 69,
+      "tags": {
+        "window": true
+      }
+    },
+    "3388120003": {
+      "areaSqm": 30,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3388226226": {
+      "areaSqm": 107,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3392105352": {
+      "areaSqm": null,
+      "tags": {}
+    },
+    "3393189400": {
+      "areaSqm": null,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3394807227": {
+      "areaSqm": null,
+      "tags": {}
+    },
+    "3398926847": {
+      "areaSqm": null,
+      "tags": {}
+    },
+    "3401494571": {
+      "areaSqm": 27,
+      "tags": {
+        "window": true
+      }
+    },
+    "3408333938": {
+      "areaSqm": 11,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3409124051": {
+      "areaSqm": null,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3409323627": {
+      "areaSqm": 25,
+      "tags": {
+        "window": true
+      }
+    },
+    "3414426010": {
+      "areaSqm": 12,
+      "tags": {
+        "window": true
+      }
+    },
+    "3415346543": {
+      "areaSqm": null,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3418903532": {
+      "areaSqm": 50,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3419491403": {
+      "areaSqm": null,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3423578382": {
+      "areaSqm": null,
+      "tags": {}
+    },
+    "3423961353": {
+      "areaSqm": null,
+      "tags": {}
+    },
+    "3426702966": {
+      "areaSqm": 15,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3426995467": {
+      "areaSqm": 63,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3432270111": {
+      "areaSqm": null,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3432285568": {
+      "areaSqm": null,
+      "tags": {}
+    },
+    "3437135269": {
+      "areaSqm": null,
+      "tags": {}
+    },
+    "3437343062": {
+      "areaSqm": null,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3437647614": {
+      "areaSqm": null,
+      "tags": {}
+    },
+    "3438090395": {
+      "areaSqm": 57,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3438534212": {
+      "areaSqm": 57,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3439168564": {
+      "areaSqm": 65,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3440131912": {
+      "areaSqm": 55,
+      "tags": {
+        "window": true
+      }
+    },
+    "3440597006": {
+      "areaSqm": null,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3440868923": {
+      "areaSqm": null,
+      "tags": {}
+    },
+    "3440959185": {
+      "areaSqm": 80,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3441408668": {
+      "areaSqm": 75,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3441511999": {
+      "areaSqm": null,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3441930107": {
+      "areaSqm": 11,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
+    },
+    "3441999996": {
+      "areaSqm": 70,
+      "tags": {}
+    }
+  }
+}
