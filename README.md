@@ -11,17 +11,19 @@ Two report modes: **new** (only listings unseen since the last run — the defau
 ## How it works
 
 ```
-sources (IS24 mobile API + Kleinanzeigen HTML)
-  → filter (price / area caps)
+profiles (config.profiles[])
+  → sources (IS24 mobile API + Kleinanzeigen HTML)
+      Kleinanzeigen: detail page fetched → area + amenity flags (cached in state/kleinanzeigen-cache.json)
+  → filter (price / area caps per profile)
   → dedupe against state/seen.json
   → Telegram alert for each NEW listing
 ```
 
-Each source is one adapter in `src/sources/`, so adding more portals later is one new file.
+Each profile in `config.profiles` is run across all sources independently. Each source is one adapter in `src/sources/`, so adding more portals later is one new file.
 
 | File | Role |
 | --- | --- |
-| `src/config.ts` | Region, caps, and search keywords — **edit this first**. |
+| `src/config.ts` | Region, search profiles, and amenity keywords — **edit this first**. |
 | `src/sources/immoscout24.ts` | IS24 commercial listings via the mobile JSON API. |
 | `src/sources/kleinanzeigen.ts` | Kleinanzeigen Stuhlmiete/salon listings via HTML. |
 | `src/state.ts` | Dedup state (`state/seen.json`). |
@@ -44,10 +46,21 @@ npm install
 - **`kleinanzeigenLocationId`** — look it up at
   `https://www.kleinanzeigen.de/s-ort-empfehlungen.json?query=<city>` or read the `l<id>`
   from a search URL (default `6411` = München). Adjust `kleinanzeigenRadiusKm`.
-- **`maxPriceEur` / `minAreaSqm` / `maxAreaSqm`** — caps (default: ≤ €2,000, ≤ 200 m²). IS24
-  retail listings are quoted per m²; the total is approximated as €/m² × m². Listings whose
-  price isn't shown are kept (so you don't miss ads that hide the rent).
-- **`kleinanzeigenQueries`** — keyword searches for the chair-rental side.
+- **`profiles`** — array of search profiles, each run independently across all sources.
+  Every profile has:
+  - `filters` (`maxPriceEur` / `minAreaSqm` / `maxAreaSqm`) — price/size caps. `null` = no
+    bound. Listings whose price or area isn't shown are kept so you don't miss hidden-rent ads.
+    IS24 retail listings are quoted per m²; the total is approximated as €/m² × m².
+  - `is24RealEstateTypes` — IS24 commercial property types to query (e.g. `["store"]`).
+  - `kleinanzeigenQueries` — keyword searches for the chair-/room-rental side.
+  - `enrichAmenities` — when `true`, Kleinanzeigen detail pages are fetched to fill in area
+    and soft amenity flags (window light, transit access, 24-h access). Results are cached in
+    `state/kleinanzeigen-cache.json`.
+
+  The current **`room`** profile targets spaces ≤ €600 / ≥ 15 m². A second **`salon`**
+  profile (for full commercial premises) can be added as another array entry.
+- **`amenityKeywords`** — keyword lists (shared across profiles) that control which
+  window / transit / 24-h flags appear on Kleinanzeigen listings in alerts.
 
 ### 3. Create a Telegram bot
 

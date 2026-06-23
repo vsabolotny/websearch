@@ -1,11 +1,10 @@
 import * as cheerio from "cheerio";
 import type { Listing } from "../types.js";
-import { config, type SearchConfig } from "../config.js";
+import { config, type SearchConfig, type SearchProfile } from "../config.js";
 import { parseGermanNumber } from "../parse.js";
+import { DE_HEADERS } from "./http.js";
 
 const BASE = "https://www.kleinanzeigen.de";
-const UA =
-  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36";
 
 function slugify(query: string): string {
   return query
@@ -20,7 +19,7 @@ function searchUrl(query: string, cfg: SearchConfig): string {
   return `${BASE}/s-${slugify(query)}/k0l${cfg.kleinanzeigenLocationId}r${cfg.kleinanzeigenRadiusKm}`;
 }
 
-function parseListings(html: string): Listing[] {
+function parseListings(html: string, profileKey: string): Listing[] {
   const $ = cheerio.load(html);
   const out: Listing[] = [];
   $("article.aditem").each((_, el) => {
@@ -33,6 +32,7 @@ function parseListings(html: string): Listing[] {
     const location = a.find(".aditem-main--top--left").text().replace(/\s+/g, " ").trim();
     out.push({
       source: "kleinanzeigen",
+      profile: profileKey,
       id,
       title: title || "(ohne Titel)",
       price: priceText || null,
@@ -45,18 +45,24 @@ function parseListings(html: string): Listing[] {
   return out;
 }
 
-/** Fetch chair-rental / salon listings from eBay Kleinanzeigen for the configured region. */
-export async function fetchListings(cfg: SearchConfig = config): Promise<Listing[]> {
+/**
+ * Fetch list-level listings from eBay Kleinanzeigen for the given profile. Amenity/area
+ * enrichment from detail pages is done separately (see Enricher) so the fetch budget can
+ * be shared across profiles in a run.
+ */
+export async function fetchListings(profile: SearchProfile, cfg: SearchConfig = config): Promise<Listing[]> {
   const byId = new Map<string, Listing>();
-  for (const query of cfg.kleinanzeigenQueries) {
-    const res = await fetch(searchUrl(query, cfg), {
-      headers: { "User-Agent": UA, "Accept-Language": "de-DE,de;q=0.9" },
-    });
-    if (!res.ok) {
-      console.warn(`Kleinanzeigen query "${query}" failed: ${res.status}`);
-      continue;
+  for (const query of profile.kleinanzeigenQueries) {
+    try {
+      const res = await fetch(searchUrl(query, cfg), { headers: DE_HEADERS });
+      if (!res.ok) {
+        console.warn(`Kleinanzeigen query "${query}" failed: ${res.status}`);
+      } else {
+        for (const l of parseListings(await res.text(), profile.key)) byId.set(l.id, l);
+      }
+    } catch (e) {
+      console.warn(`Kleinanzeigen query "${query}" error:`, e instanceof Error ? e.message : String(e));
     }
-    for (const l of parseListings(await res.text())) byId.set(l.id, l);
     await new Promise((r) => setTimeout(r, 800)); // be polite between requests
   }
   return [...byId.values()];
@@ -64,7 +70,9 @@ export async function fetchListings(cfg: SearchConfig = config): Promise<Listing
 
 // `npm run kleinanzeigen` — run this adapter standalone.
 if (import.meta.url === `file://${process.argv[1]}`) {
-  const listings = await fetchListings();
+  const profile = config.profiles[0];
+  if (!profile) throw new Error("No profiles configured.");
+  const listings = await fetchListings(profile);
   console.log(`Kleinanzeigen: ${listings.length} listings in ${config.regionLabel}`);
   for (const l of listings.slice(0, 8)) {
     console.log(`- [${l.price ?? "?"}] ${l.title} | ${l.address} | ${l.url}`);

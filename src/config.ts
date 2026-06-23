@@ -1,41 +1,48 @@
 /**
- * Search configuration. Edit the region and caps to match what you're looking for.
+ * Search configuration. Region/geo settings are shared; each entry in `profiles` is one
+ * search (its own price/size caps and per-source queries) run across every source.
  *
- * IS24 uses a radius search around a point: set the city-center latitude/longitude
- * and a radius in km. Look up coordinates for any city (e.g. via Google Maps).
- *
- * Kleinanzeigen uses a numeric location id in its search URLs (e.g. l6411 = München).
- * Find yours via https://www.kleinanzeigen.de/s-ort-empfehlungen.json?query=<city>
- * or by reading the `l<id>` from a search URL on kleinanzeigen.de.
+ * IS24 uses a radius search around a point: set the city-center latitude/longitude and a
+ * radius in km. Kleinanzeigen uses a numeric location id in its search URLs (l6411 = München).
  */
+import type { AmenityKeywords } from "./types.js";
+
+/** Price/size caps for one search profile. null = no bound; unknown listing values pass. */
+export interface FilterCaps {
+  maxPriceEur: number | null;
+  minAreaSqm: number | null;
+  maxAreaSqm: number | null;
+}
+
+/** One search run across all sources. */
+export interface SearchProfile {
+  /** Stable key, e.g. "room". */
+  key: string;
+  /** Short label shown in alerts, e.g. "Raum". */
+  label: string;
+  filters: FilterCaps;
+  /** IS24 commercial real-estate types to query for this profile. */
+  is24RealEstateTypes: string[];
+  /** Kleinanzeigen keyword searches for this profile. */
+  kleinanzeigenQueries: string[];
+  /** When true, fetch Kleinanzeigen detail pages to fill area + amenity flags. */
+  enrichAmenities: boolean;
+}
+
 export interface SearchConfig {
   regionLabel: string;
 
-  // --- ImmobilienScout24 (commercial spaces to open your own salon) ---
-  /** City-center latitude for the IS24 radius search. */
+  // --- shared region / geo ---
   is24Lat: number;
-  /** City-center longitude for the IS24 radius search. */
   is24Lon: number;
-  /** Search radius in km around the IS24 center point. */
   is24RadiusKm: number;
-  /** Commercial real-estate types to watch. "store" = retail/Ladenfläche (best for a salon). */
-  is24RealEstateTypes: string[];
-
-  // --- eBay Kleinanzeigen (a chair/room inside an existing salon) ---
-  /** Kleinanzeigen location id, e.g. 3331 for Berlin. */
   kleinanzeigenLocationId: number;
-  /** Kleinanzeigen radius in km around the location. */
   kleinanzeigenRadiusKm: number;
-  /** Keyword searches to run on Kleinanzeigen (each is a separate query). */
-  kleinanzeigenQueries: string[];
 
-  // --- Shared filters ---
-  /** Max monthly rent in EUR (null = no cap). */
-  maxPriceEur: number | null;
-  /** Min usable area in m² (null = no min). Salons are small, so this trims big units. */
-  minAreaSqm: number | null;
-  /** Max usable area in m² (null = no max). */
-  maxAreaSqm: number | null;
+  /** Keyword lists for amenity detection (shared across profiles). */
+  amenityKeywords: AmenityKeywords;
+  /** The searches to run. */
+  profiles: SearchProfile[];
 }
 
 export const config: SearchConfig = {
@@ -44,13 +51,36 @@ export const config: SearchConfig = {
   is24Lat: 48.1374,
   is24Lon: 11.5755,
   is24RadiusKm: 10,
-  is24RealEstateTypes: ["store"],
 
   kleinanzeigenLocationId: 6411,
   kleinanzeigenRadiusKm: 20,
-  kleinanzeigenQueries: ["friseur stuhlmiete", "friseur laden", "kosmetik stuhlmiete"],
 
-  maxPriceEur: 2000,
-  minAreaSqm: null,
-  maxAreaSqm: 200,
+  amenityKeywords: {
+    window: ["fenster", "tageslicht", "lichtdurchflutet", "natürliches licht"],
+    transit: [
+      "u-bahn", "s-bahn", "öpnv", "öffentliche", "bus", "tram", "straßenbahn",
+      "haltestelle", "anbindung", "verkehrsanbindung", "bahnhof", "zentral",
+    ],
+    alwaysAccessible: [
+      "24 stunden", "24/7", "24h", "rund um die uhr", "jederzeit zugang",
+      "jederzeit zugäng", "eigener schlüssel", "eigenen schlüssel", "schlüssel",
+      "wochenende", "nachts",
+    ],
+  },
+
+  profiles: [
+    {
+      key: "room",
+      label: "Raum",
+      filters: { maxPriceEur: 600, minAreaSqm: 15, maxAreaSqm: null },
+      is24RealEstateTypes: ["store"],
+      kleinanzeigenQueries: [
+        "friseur raum mieten",
+        "kosmetik raum",
+        "behandlungsraum",
+        "gewerberaum friseur",
+      ],
+      enrichAmenities: true,
+    },
+  ],
 };

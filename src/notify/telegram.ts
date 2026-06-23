@@ -1,4 +1,5 @@
 import type { Listing } from "../types.js";
+import { amenitySummary } from "../amenities.js";
 
 const API = "https://api.telegram.org";
 
@@ -31,9 +32,11 @@ function formatListing(l: Listing): string {
   if (l.areaSqm != null) parts.push(`${l.areaSqm} m²`);
   const meta = parts.length ? `\n${escapeHtml(parts.join(" · "))}` : "";
   const addr = l.address ? `\n📍 ${escapeHtml(l.address)}` : "";
+  const flags = amenitySummary(l.tags);
+  const flagLine = flags ? `\n${escapeHtml(flags)}` : "";
   return (
-    `🏠 <b>${escapeHtml(l.title)}</b>${meta}${addr}\n` +
-    `<i>${SOURCE_LABEL[l.source]}</i> — <a href="${l.url}">Inserat öffnen</a>`
+    `🏠 <b>${escapeHtml(l.title)}</b>${meta}${addr}${flagLine}\n` +
+    `<i>${SOURCE_LABEL[l.source]}</i> — <a href="${escapeHtml(l.url)}">Inserat öffnen</a>`
   );
 }
 
