@@ -5,6 +5,8 @@ import { amenitySummary } from "../amenities.js";
 const SOURCE_LABEL: Record<Listing["source"], string> = {
   immoscout24: "ImmobilienScout24",
   kleinanzeigen: "Kleinanzeigen",
+  immosuchmaschine: "immosuchmaschine",
+  matchoffice: "MatchOffice",
 };
 
 /** True when Gmail SMTP + at least one recipient are configured. */

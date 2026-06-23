@@ -6,11 +6,15 @@ import { notifyListing, notifyText, telegramConfigured } from "./notify/telegram
 import { sendReport, emailConfigured } from "./notify/email.js";
 import { fetchListings as fetchIs24 } from "./sources/immoscout24.js";
 import { fetchListings as fetchKleinanzeigen } from "./sources/kleinanzeigen.js";
+import { fetchListings as fetchImmosuchmaschine } from "./sources/immosuchmaschine.js";
+import { fetchListings as fetchMatchoffice } from "./sources/matchoffice.js";
 import { Enricher } from "./sources/enrichment.js";
 
 const SOURCES: { name: string; fetch: (p: SearchProfile, cfg?: SearchConfig) => Promise<Listing[]> }[] = [
   { name: "ImmobilienScout24", fetch: fetchIs24 },
   { name: "Kleinanzeigen", fetch: fetchKleinanzeigen },
+  { name: "immosuchmaschine", fetch: fetchImmosuchmaschine },
+  { name: "MatchOffice", fetch: fetchMatchoffice },
 ];
 
 /** "full" reports every current match; "new" (default) reports only unseen listings. */

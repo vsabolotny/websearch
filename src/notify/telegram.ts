@@ -24,6 +24,8 @@ function escapeHtml(s: string): string {
 const SOURCE_LABEL: Record<Listing["source"], string> = {
   immoscout24: "ImmobilienScout24",
   kleinanzeigen: "Kleinanzeigen",
+  immosuchmaschine: "immosuchmaschine",
+  matchoffice: "MatchOffice",
 };
 
 function formatListing(l: Listing): string {

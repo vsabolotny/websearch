@@ -12,7 +12,7 @@ Two report modes: **new** (only listings unseen since the last run — the defau
 
 ```
 profiles (config.profiles[])
-  → sources (IS24 mobile API + Kleinanzeigen HTML)
+  → sources (IS24 mobile API + Kleinanzeigen HTML + immosuchmaschine HTML + MatchOffice JSON-LD)
       Kleinanzeigen: detail page fetched → area + amenity flags (cached in state/kleinanzeigen-cache.json)
   → filter (price / area caps per profile)
   → dedupe against state/seen.json
@@ -26,6 +26,8 @@ Each profile in `config.profiles` is run across all sources independently. Each 
 | `src/config.ts` | Region, search profiles, and amenity keywords — **edit this first**. |
 | `src/sources/immoscout24.ts` | IS24 commercial listings via the mobile JSON API. |
 | `src/sources/kleinanzeigen.ts` | Kleinanzeigen Stuhlmiete/salon listings via HTML. |
+| `src/sources/immosuchmaschine.ts` | immosuchmaschine metasearch (aggregates many portals) via HTML; newest-first. |
+| `src/sources/matchoffice.ts` | MatchOffice office/coworking listings via JSON-LD (no price/area). |
 | `src/state.ts` | Dedup state (`state/seen.json`). |
 | `src/notify/telegram.ts` | Telegram delivery (per-listing). |
 | `src/notify/email.ts` | Email report delivery (digest) via Gmail SMTP. |
@@ -46,6 +48,8 @@ npm install
 - **`kleinanzeigenLocationId`** — look it up at
   `https://www.kleinanzeigen.de/s-ort-empfehlungen.json?query=<city>` or read the `l<id>`
   from a search URL (default `6411` = München). Adjust `kleinanzeigenRadiusKm`.
+- **`citySlug`** — the city as it appears in immosuchmaschine / MatchOffice URLs
+  (default `"muenchen"`; e.g. `.../b/muenchen/...`, `.../mieten/buro/muenchen`).
 - **`profiles`** — array of search profiles, each run independently across all sources.
   Every profile has:
   - `filters` (`maxPriceEur` / `minAreaSqm` / `maxAreaSqm`) — price/size caps. `null` = no
@@ -53,12 +57,18 @@ npm install
     IS24 retail listings are quoted per m²; the total is approximated as €/m² × m².
   - `is24RealEstateTypes` — IS24 commercial property types to query (e.g. `["store"]`).
   - `kleinanzeigenQueries` — keyword searches for the chair-/room-rental side.
+  - `immosuchmaschineCategories` — immosuchmaschine categories to query, e.g.
+    `["gewerbeimmobilien-mieten"]`. Empty/omitted = source skipped for that profile.
+  - `matchofficeCategories` — MatchOffice categories, e.g. `["buro"]`. Empty/omitted = skipped.
+    MatchOffice listings carry no price/area, so the filter caps can't bound them; it ships
+    **off** by default (`[]`) and floods office listings if enabled.
   - `enrichAmenities` — when `true`, Kleinanzeigen detail pages are fetched to fill in area
     and soft amenity flags (window light, transit access, 24-h access). Results are cached in
     `state/kleinanzeigen-cache.json`.
 
-  The current **`room`** profile targets spaces ≤ €600 / ≥ 15 m². A second **`salon`**
-  profile (for full commercial premises) can be added as another array entry.
+  The current **`room`** profile targets spaces ≤ €600 / ≥ 15 m² (IS24 + Kleinanzeigen +
+  immosuchmaschine). A second **`salon`** profile (for full commercial premises) can be added
+  as another array entry.
 - **`amenityKeywords`** — keyword lists (shared across profiles) that control which
   window / transit / 24-h flags appear on Kleinanzeigen listings in alerts.
 
@@ -95,8 +105,10 @@ npm run email-test   # should email a sample report to the recipients
 ## Running & report modes
 
 ```bash
-npm run is24           # just the IS24 adapter (prints listings)
-npm run kleinanzeigen  # just the Kleinanzeigen adapter
+npm run is24             # just the IS24 adapter (prints listings)
+npm run kleinanzeigen    # just the Kleinanzeigen adapter
+npm run immosuchmaschine # just the immosuchmaschine adapter
+npm run matchoffice      # just the MatchOffice adapter
 npm start              # MODE=new (default): report only new listings
 MODE=full npm start    # report the whole current list (on-demand digest)
 ```
