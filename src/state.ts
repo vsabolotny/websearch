@@ -1,6 +1,6 @@
-import { readFile, writeFile, mkdir } from "node:fs/promises";
-import { dirname } from "node:path";
+import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
+import { writeJsonFile } from "./jsonFile.js";
 import { listingKey, type Listing } from "./types.js";
 
 const STATE_PATH = fileURLToPath(new URL("../state/seen.json", import.meta.url));
@@ -32,6 +32,5 @@ export function markSeen(state: SeenState, listing: Listing): void {
 }
 
 export async function saveState(state: SeenState): Promise<void> {
-  await mkdir(dirname(STATE_PATH), { recursive: true });
-  await writeFile(STATE_PATH, JSON.stringify({ seen: state.seen }, null, 2) + "\n");
+  await writeJsonFile(STATE_PATH, { seen: state.seen });
 }

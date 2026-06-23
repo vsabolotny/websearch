@@ -6,6 +6,7 @@ import { notifyListing, notifyText, telegramConfigured } from "./notify/telegram
 import { sendReport, emailConfigured } from "./notify/email.js";
 import { fetchListings as fetchIs24 } from "./sources/immoscout24.js";
 import { fetchListings as fetchKleinanzeigen } from "./sources/kleinanzeigen.js";
+import { Enricher } from "./sources/enrichment.js";
 
 const SOURCES: { name: string; fetch: (p: SearchProfile, cfg?: SearchConfig) => Promise<Listing[]> }[] = [
   { name: "ImmobilienScout24", fetch: fetchIs24 },
@@ -31,6 +32,22 @@ async function gather(): Promise<Listing[]> {
     }
   }
   return all;
+}
+
+/**
+ * Enrich Kleinanzeigen listings (area + amenity flags) for profiles that opt in. One
+ * Enricher per run shares a single cache and fetch budget across all profiles.
+ */
+async function enrichKleinanzeigen(listings: Listing[]): Promise<void> {
+  const enrichKeys = new Set(config.profiles.filter((p) => p.enrichAmenities).map((p) => p.key));
+  const targets = listings.filter((l) => l.source === "kleinanzeigen" && enrichKeys.has(l.profile));
+  if (!targets.length) return;
+  const enricher = new Enricher(config.amenityKeywords);
+  try {
+    await enricher.enrich(targets);
+  } finally {
+    await enricher.flush();
+  }
 }
 
 /** Deliver a report to every configured channel. */
@@ -66,7 +83,9 @@ async function dispatch(report: Listing[]): Promise<void> {
 async function main(): Promise<void> {
   console.log(`Mode: ${MODE}`);
   const state = await loadState();
-  const matches = applyFilters(await gather(), config.profiles);
+  const listings = await gather();
+  await enrichKleinanzeigen(listings);
+  const matches = applyFilters(listings, config.profiles);
 
   // First ever run in "new" mode: seed silently so we don't blast every existing listing.
   if (state.wasEmpty && MODE === "new") {
