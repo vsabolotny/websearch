@@ -1,4 +1,4 @@
-export type Source = "immoscout24" | "kleinanzeigen" | "immosuchmaschine" | "matchoffice";
+export type Source = "immoscout24" | "kleinanzeigen" | "immosuchmaschine" | "matchoffice" | "tophair";
 
 /** What a run reports: "new" = only listings unseen since last run; "full" = all current matches. */
 export type ReportMode = "new" | "full";

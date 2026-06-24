@@ -7,6 +7,7 @@ const SOURCE_LABEL: Record<Listing["source"], string> = {
   kleinanzeigen: "Kleinanzeigen",
   immosuchmaschine: "immosuchmaschine",
   matchoffice: "MatchOffice",
+  tophair: "TOP HAIR",
 };
 
 /** True when Gmail SMTP + at least one recipient are configured. */

@@ -30,6 +30,8 @@ export interface SearchProfile {
   immosuchmaschineCategories?: string[];
   /** MatchOffice categories to query, e.g. ["buro"]. Empty = skip (office space has no price/area). */
   matchofficeCategories?: string[];
+  /** When true, include the TOP HAIR Kleinanzeigen board (salon-space ads) for this profile. */
+  tophairEnabled?: boolean;
   /** When true, fetch Kleinanzeigen detail pages to fill area + amenity flags. */
   enrichAmenities: boolean;
 }
@@ -45,6 +47,8 @@ export interface SearchConfig {
   kleinanzeigenRadiusKm: number;
   /** City URL slug for immosuchmaschine + MatchOffice, e.g. "muenchen". */
   citySlug: string;
+  /** Region terms used to scope the nationwide TOP HAIR board (substring match in ad text). */
+  tophairRegionKeywords: string[];
 
   /** Keyword lists for amenity detection (shared across profiles). */
   amenityKeywords: AmenityKeywords;
@@ -62,6 +66,7 @@ export const config: SearchConfig = {
   kleinanzeigenLocationId: 6411,
   kleinanzeigenRadiusKm: 10,
   citySlug: "muenchen",
+  tophairRegionKeywords: ["münchen", "muenchen"],
 
   amenityKeywords: {
     window: ["fenster", "tageslicht", "lichtdurchflutet", "natürliches licht"],
@@ -93,6 +98,20 @@ export const config: SearchConfig = {
       // Dormant: MatchOffice office space has no price/area, so it can't honor the room caps.
       matchofficeCategories: [],
       enrichAmenities: true,
+    },
+    {
+      // Salon-business opportunities from the TOP HAIR board (sale/takeover/chair rental). These
+      // aren't priced like a monthly room, so no caps apply — relevance comes from the adapter's
+      // München + salon-space filtering instead. Only TOP HAIR runs for this profile.
+      key: "salon",
+      label: "Salon",
+      filters: { maxPriceEur: null, minAreaSqm: null, maxAreaSqm: null },
+      is24RealEstateTypes: [],
+      kleinanzeigenQueries: [],
+      immosuchmaschineCategories: [],
+      matchofficeCategories: [],
+      tophairEnabled: true,
+      enrichAmenities: false,
     },
   ],
 };
