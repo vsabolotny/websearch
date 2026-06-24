@@ -19,7 +19,9 @@ Detailed instructions for each item are in [`README.md`](./README.md).
 Repo → **Settings → Secrets and variables → Actions → New repository secret**.
 
 - [ ] `TELEGRAM_BOT_TOKEN` — from BotFather *(add if not already set)*
-- [ ] `TELEGRAM_CHAT_ID` — your chat id *(add if not already set)*
+- [ ] `TELEGRAM_CHAT_ID` — your chat id, or a comma-separated list to reach several chats
+      (e.g. a shared group: `<you>,<group-id>`). See README → *Create a Telegram bot* for
+      how to find a group's id. *(add if not already set)*
 
 For email reports (optional but requested):
 
