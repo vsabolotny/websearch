@@ -1,7 +1,8 @@
 import * as cheerio from "cheerio";
-import type { Listing } from "../types.js";
+import type { AmenityKeywords, Listing } from "../types.js";
 import { config, type SearchConfig, type SearchProfile } from "../config.js";
 import { parseGermanNumber } from "../parse.js";
+import { matchAmenities } from "../amenities.js";
 import { DE_HEADERS } from "./http.js";
 
 const BASE = "https://www.immosuchmaschine.de";
@@ -19,13 +20,24 @@ function searchUrl(category: string, cfg: SearchConfig): string {
 
 const clean = (s: string): string => s.replace(/\s+/g, " ").trim();
 
-export function parseListings(html: string, profileKey: string): Listing[] {
+/** "Landsberger Straße, 80687 München • Büro zu mieten" → "Landsberger Straße, 80687 München". */
+function addressFromZipCity(zipcity: string): string | null {
+  const addr = clean(zipcity.split("•")[0] ?? "");
+  return addr || null;
+}
+
+export function parseListings(html: string, profileKey: string, amenityKeywords?: AmenityKeywords): Listing[] {
   const $ = cheerio.load(html);
   const out: Listing[] = [];
   $("li.block_item").each((_, el) => {
     const card = $(el);
     const id = (card.attr("id") ?? "").replace(/^item_/, "");
     if (!id) return;
+
+    // Cards deep-link straight to the partner site (the on-site /expose page was removed). Without a
+    // link there is nothing the user can open, so skip rather than emit a dead URL.
+    const href = card.find("a.objectLink").first().attr("href");
+    if (!href) return;
 
     // Each card holds a definition list of facts; "—" is the site's "not specified" placeholder.
     const facts = new Map<string, string>();
@@ -37,7 +49,7 @@ export function parseListings(html: string, profileKey: string): Listing[] {
     const areaText = facts.get("Nutzfläche") ?? null;
 
     const title = clean(card.find("h2, h3, h4").first().text());
-    const href = card.find("a.objectLink[href*='/expose/']").first().attr("href");
+    const tags = amenityKeywords ? matchAmenities(card.text(), amenityKeywords) : undefined;
     out.push({
       source: "immosuchmaschine",
       profile: profileKey,
@@ -46,8 +58,9 @@ export function parseListings(html: string, profileKey: string): Listing[] {
       price: priceText,
       priceEur: parseGermanNumber(priceText),
       areaSqm: parseGermanNumber(areaText),
-      address: null,
-      url: href || `${BASE}/expose/${id}`,
+      address: addressFromZipCity(card.find(".data_zipcity").first().text()),
+      url: href,
+      ...(tags && Object.keys(tags).length ? { tags } : {}),
     });
   });
   return out;
@@ -62,7 +75,7 @@ export async function fetchListings(profile: SearchProfile, cfg: SearchConfig = 
       if (!res.ok) {
         console.warn(`immosuchmaschine "${category}" failed: ${res.status}`);
       } else {
-        for (const l of parseListings(await res.text(), profile.key)) byId.set(l.id, l);
+        for (const l of parseListings(await res.text(), profile.key, cfg.amenityKeywords)) byId.set(l.id, l);
       }
     } catch (e) {
       console.warn(`immosuchmaschine "${category}" error:`, e instanceof Error ? e.message : String(e));
@@ -79,6 +92,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const listings = await fetchListings(profile);
   console.log(`immosuchmaschine: ${listings.length} listings in ${config.regionLabel}`);
   for (const l of listings.slice(0, 8)) {
-    console.log(`- [${l.priceEur ?? "?"}€ ${l.areaSqm ?? "?"}m²] ${l.title} | ${l.url}`);
+    console.log(`- [${l.priceEur ?? "?"}€ ${l.areaSqm ?? "?"}m²] ${l.title}`);
+    console.log(`    📍 ${l.address ?? "—"} | ${l.url}`);
   }
 }
