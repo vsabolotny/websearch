@@ -10,6 +10,7 @@
     "kleinanzeigen": "tsx src/sources/kleinanzeigen.ts",
     "immosuchmaschine": "tsx src/sources/immosuchmaschine.ts",
     "matchoffice": "tsx src/sources/matchoffice.ts",
+    "tophair": "tsx src/sources/tophair.ts",
     "notify-test": "tsx src/notify/telegram.ts",
     "email-test": "tsx src/notify/email.ts",
     "test": "node --import tsx --test \"src/**/*.test.ts\"",

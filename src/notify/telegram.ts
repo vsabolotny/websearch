@@ -26,6 +26,7 @@ const SOURCE_LABEL: Record<Listing["source"], string> = {
   kleinanzeigen: "Kleinanzeigen",
   immosuchmaschine: "immosuchmaschine",
   matchoffice: "MatchOffice",
+  tophair: "TOP HAIR",
 };
 
 function formatListing(l: Listing): string {

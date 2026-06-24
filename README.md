@@ -12,7 +12,7 @@ Two report modes: **new** (only listings unseen since the last run — the defau
 
 ```
 profiles (config.profiles[])
-  → sources (IS24 mobile API + Kleinanzeigen HTML + immosuchmaschine HTML + MatchOffice JSON-LD)
+  → sources (IS24 mobile API + Kleinanzeigen HTML + immosuchmaschine HTML + MatchOffice JSON-LD + TOP HAIR HTML)
       Kleinanzeigen: detail page fetched → area + amenity flags (cached in state/kleinanzeigen-cache.json)
   → filter (price / area caps per profile)
   → dedupe against state/seen.json
@@ -28,6 +28,7 @@ Each profile in `config.profiles` is run across all sources independently. Each 
 | `src/sources/kleinanzeigen.ts` | Kleinanzeigen Stuhlmiete/salon listings via HTML. |
 | `src/sources/immosuchmaschine.ts` | immosuchmaschine metasearch (aggregates many portals) via HTML; newest-first. |
 | `src/sources/matchoffice.ts` | MatchOffice office/coworking listings via JSON-LD (no price/area). |
+| `src/sources/tophair.ts` | TOP HAIR Kleinanzeigen board (HTML) — salon-space ads scoped to the region. |
 | `src/state.ts` | Dedup state (`state/seen.json`). |
 | `src/notify/telegram.ts` | Telegram delivery (per-listing). |
 | `src/notify/email.ts` | Email report delivery (digest) via Gmail SMTP. |
@@ -50,6 +51,8 @@ npm install
   from a search URL (default `6411` = München). Adjust `kleinanzeigenRadiusKm`.
 - **`citySlug`** — the city as it appears in immosuchmaschine / MatchOffice URLs
   (default `"muenchen"`; e.g. `.../b/muenchen/...`, `.../mieten/buro/muenchen`).
+- **`tophairRegionKeywords`** — the TOP HAIR board is nationwide with no location field, so
+  ads are scoped by matching these terms in the ad text (default `["münchen", "muenchen"]`).
 - **`profiles`** — array of search profiles, each run independently across all sources.
   Every profile has:
   - `filters` (`maxPriceEur` / `minAreaSqm` / `maxAreaSqm`) — price/size caps. `null` = no
@@ -62,13 +65,17 @@ npm install
   - `matchofficeCategories` — MatchOffice categories, e.g. `["buro"]`. Empty/omitted = skipped.
     MatchOffice listings carry no price/area, so the filter caps can't bound them; it ships
     **off** by default (`[]`) and floods office listings if enabled.
+  - `tophairEnabled` — when `true`, the TOP HAIR Kleinanzeigen board is searched for this
+    profile, keeping only region-matching **salon-space** ads (sale / takeover / chair rental;
+    equipment and job posts are filtered out). Omitted/`false` = skipped.
   - `enrichAmenities` — when `true`, Kleinanzeigen detail pages are fetched to fill in area
     and soft amenity flags (window light, transit access, 24-h access). Results are cached in
     `state/kleinanzeigen-cache.json`.
 
   The current **`room`** profile targets spaces ≤ €600 / ≥ 15 m² (IS24 + Kleinanzeigen +
-  immosuchmaschine). A second **`salon`** profile (for full commercial premises) can be added
-  as another array entry.
+  immosuchmaschine). A second **`salon`** profile carries the TOP HAIR salon-space board with
+  **no price/area caps** — salon sales/takeovers aren't priced like a monthly room, so relevance
+  comes from the region + salon-space filtering instead.
 - **`amenityKeywords`** — keyword lists (shared across profiles) that control which
   window / transit / 24-h flags appear on Kleinanzeigen listings in alerts.
 
@@ -109,6 +116,7 @@ npm run is24             # just the IS24 adapter (prints listings)
 npm run kleinanzeigen    # just the Kleinanzeigen adapter
 npm run immosuchmaschine # just the immosuchmaschine adapter
 npm run matchoffice      # just the MatchOffice adapter
+npm run tophair          # just the TOP HAIR adapter
 npm start              # MODE=new (default): report only new listings
 MODE=full npm start    # report the whole current list (on-demand digest)
 ```
