@@ -86,12 +86,18 @@ npm install
 3. Get your **chat id**: open
    `https://api.telegram.org/bot<TOKEN>/getUpdates` and read `result[].message.chat.id`.
 
+`TELEGRAM_CHAT_ID` may be a **comma-separated list** — the bot delivers every alert to
+each chat. To share findings with someone else, create a group, add the bot to it, post a
+message in the group, and read the group's id from the same `getUpdates` response (group
+ids are negative, e.g. `-100…`). Then set `TELEGRAM_CHAT_ID` to that group id (so both
+members see and discuss listings there) or to several ids at once (`<you>,<group>`).
+
 Export them locally to test:
 
 ```bash
 export TELEGRAM_BOT_TOKEN=123:abc
-export TELEGRAM_CHAT_ID=987654
-npm run notify-test   # should DM you a test message
+export TELEGRAM_CHAT_ID=987654          # one id, or a list: 987654,-1001234567890
+npm run notify-test   # sends a test message to every configured chat
 ```
 
 Telegram and email are both optional and independent — configure either, both, or neither.

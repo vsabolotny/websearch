@@ -3,18 +3,23 @@ import { amenitySummary } from "../amenities.js";
 
 const API = "https://api.telegram.org";
 
-/** True when both Telegram credentials are present in the environment. */
+/** True when the bot token and at least one chat id are present in the environment. */
 export function telegramConfigured(): boolean {
-  return Boolean(process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID);
+  return Boolean(process.env.TELEGRAM_BOT_TOKEN && chatIds().length);
 }
 
-function creds(): { token: string; chatId: string } {
-  const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_CHAT_ID;
-  if (!token || !chatId) {
-    throw new Error("Missing TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID environment variables.");
-  }
-  return { token, chatId };
+/** Destination chat ids — `TELEGRAM_CHAT_ID` is a comma-separated list (one id also works). */
+export function chatIds(): string[] {
+  return (process.env.TELEGRAM_CHAT_ID ?? "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+function token(): string {
+  const t = process.env.TELEGRAM_BOT_TOKEN;
+  if (!t) throw new Error("Missing TELEGRAM_BOT_TOKEN environment variable.");
+  return t;
 }
 
 function escapeHtml(s: string): string {
@@ -43,9 +48,8 @@ function formatListing(l: Listing): string {
   );
 }
 
-async function send(text: string): Promise<void> {
-  const { token, chatId } = creds();
-  const res = await fetch(`${API}/bot${token}/sendMessage`, {
+async function sendToChat(tok: string, chatId: string, text: string): Promise<void> {
+  const res = await fetch(`${API}/bot${tok}/sendMessage`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -57,6 +61,23 @@ async function send(text: string): Promise<void> {
   });
   if (!res.ok) {
     throw new Error(`Telegram sendMessage failed: ${res.status} ${await res.text()}`);
+  }
+}
+
+// Deliver to every configured chat. One failing chat (e.g. a chat the bot isn't in) must
+// not stop delivery to the others, so all are attempted and failures are reported together.
+async function send(text: string): Promise<void> {
+  const tok = token();
+  const failures: string[] = [];
+  for (const chatId of chatIds()) {
+    try {
+      await sendToChat(tok, chatId, text);
+    } catch (e) {
+      failures.push(`${chatId}: ${(e as Error).message}`);
+    }
+  }
+  if (failures.length) {
+    throw new Error(`Telegram delivery failed for ${failures.length} chat(s) — ${failures.join("; ")}`);
   }
 }
 
@@ -73,5 +94,5 @@ export async function notifyText(text: string): Promise<void> {
 // `npm run notify-test` — sends a test message to confirm credentials work.
 if (import.meta.url === `file://${process.argv[1]}`) {
   await notifyText("✅ Salon-room monitor: Telegram connection works.");
-  console.log("Test message sent.");
+  console.log("Test message sent to:", chatIds().join(", "));
 }
