@@ -60,7 +60,7 @@ export const config: SearchConfig = {
   is24RadiusKm: 10,
 
   kleinanzeigenLocationId: 6411,
-  kleinanzeigenRadiusKm: 20,
+  kleinanzeigenRadiusKm: 10,
   citySlug: "muenchen",
 
   amenityKeywords: {

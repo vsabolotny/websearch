@@ -15,7 +15,7 @@ function slugify(query: string): string {
     .replace(/^-|-$/g, "");
 }
 
-function searchUrl(query: string, cfg: SearchConfig): string {
+export function searchUrl(query: string, cfg: SearchConfig): string {
   return `${BASE}/s-${slugify(query)}/k0l${cfg.kleinanzeigenLocationId}r${cfg.kleinanzeigenRadiusKm}`;
 }
 
