@@ -58,8 +58,11 @@ npm install
 - **`profiles`** — array of search profiles, each run independently across all sources.
   Every profile has:
   - `filters` (`maxPriceEur` / `minAreaSqm` / `maxAreaSqm`) — price/size caps. `null` = no
-    bound. Listings whose price or area isn't shown are kept so you don't miss hidden-rent ads.
-    IS24 retail listings are quoted per m²; the total is approximated as €/m² × m².
+    bound. Listings whose area isn't shown are kept so you don't miss hidden-size ads. A listing
+    with no shown price is kept only when the profile sets no `maxPriceEur`; under a price cap an
+    "auf Anfrage" listing is dropped, since it can't be confirmed within budget (keeps coworking
+    "on request" spam out of price-capped searches). IS24 retail listings are quoted per m²; the
+    total is approximated as €/m² × m².
   - `is24RealEstateTypes` — IS24 commercial property types to query (e.g. `["store"]`).
   - `kleinanzeigenQueries` — keyword searches for the chair-/room-rental side.
   - `immosuchmaschineCategories` — immosuchmaschine categories to query, e.g.
