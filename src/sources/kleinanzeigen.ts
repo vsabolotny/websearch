@@ -19,7 +19,17 @@ export function searchUrl(query: string, cfg: SearchConfig): string {
   return `${BASE}/s-${slugify(query)}/k0l${cfg.kleinanzeigenLocationId}r${cfg.kleinanzeigenRadiusKm}`;
 }
 
-function parseListings(html: string, profileKey: string): Listing[] {
+/**
+ * Distance in km that Kleinanzeigen prints next to a list-view location, e.g. "(0.6 km)",
+ * "(4 km)", "(ca. 50 km)". Returns null when no distance is shown (an ad at the exact search
+ * center, or a non-radius result). Decimals may use "." or ",".
+ */
+export function distanceKmFromLocation(location: string): number | null {
+  const m = location.match(/\(\s*(?:ca\.?\s*)?(\d+(?:[.,]\d+)?)\s*km\s*\)/i);
+  return m?.[1] ? parseFloat(m[1].replace(",", ".")) : null;
+}
+
+export function parseListings(html: string, profileKey: string, radiusKm: number): Listing[] {
   const $ = cheerio.load(html);
   const out: Listing[] = [];
   $("article.aditem").each((_, el) => {
@@ -30,6 +40,11 @@ function parseListings(html: string, profileKey: string): Listing[] {
     const title = (a.find("h2 a.ellipsis").text() || a.find("a.ellipsis").first().text()).trim();
     const priceText = a.find(".aditem-main--middle--price-shipping--price").text().trim();
     const location = a.find(".aditem-main--top--left").text().replace(/\s+/g, " ").trim();
+    // Kleinanzeigen pads a sparse radius search with "Anzeigen in der Umgebung" beyond the
+    // requested radius (the r-param is a soft hint, not a hard cap). Drop those using the
+    // distance it prints; keep listings with no distance shown (don't drop on missing data).
+    const distanceKm = distanceKmFromLocation(location);
+    if (distanceKm != null && distanceKm > radiusKm) return;
     out.push({
       source: "kleinanzeigen",
       profile: profileKey,
@@ -58,7 +73,7 @@ export async function fetchListings(profile: SearchProfile, cfg: SearchConfig = 
       if (!res.ok) {
         console.warn(`Kleinanzeigen query "${query}" failed: ${res.status}`);
       } else {
-        for (const l of parseListings(await res.text(), profile.key)) byId.set(l.id, l);
+        for (const l of parseListings(await res.text(), profile.key, cfg.kleinanzeigenRadiusKm)) byId.set(l.id, l);
       }
     } catch (e) {
       console.warn(`Kleinanzeigen query "${query}" error:`, e instanceof Error ? e.message : String(e));

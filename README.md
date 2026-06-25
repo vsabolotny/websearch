@@ -48,7 +48,9 @@ npm install
   Set your city-center coordinates and radius. (Default = München, 10 km.)
 - **`kleinanzeigenLocationId`** — look it up at
   `https://www.kleinanzeigen.de/s-ort-empfehlungen.json?query=<city>` or read the `l<id>`
-  from a search URL (default `6411` = München). Adjust `kleinanzeigenRadiusKm`.
+  from a search URL (default `6411` = München). Adjust `kleinanzeigenRadiusKm`. Kleinanzeigen
+  pads sparse radius searches with farther "Umgebung" results, so listings whose printed
+  distance exceeds `kleinanzeigenRadiusKm` are dropped client-side.
 - **`citySlug`** — the city as it appears in immosuchmaschine / MatchOffice URLs
   (default `"muenchen"`; e.g. `.../b/muenchen/...`, `.../mieten/buro/muenchen`).
 - **`tophairRegionKeywords`** — the TOP HAIR board is nationwide with no location field, so
