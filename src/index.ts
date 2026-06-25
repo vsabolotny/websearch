@@ -2,7 +2,7 @@ import { config, type SearchConfig, type SearchProfile } from "./config.js";
 import type { Listing, ReportMode } from "./types.js";
 import { applyFilters } from "./filter.js";
 import { isNew, loadState, markSeen, saveState } from "./state.js";
-import { notifyListing, notifyText, telegramConfigured } from "./notify/telegram.js";
+import { notifyDigest, notifyListing, notifyText, telegramConfigured } from "./notify/telegram.js";
 import { sendReport, emailConfigured } from "./notify/email.js";
 import { fetchListings as fetchIs24 } from "./sources/immoscout24.js";
 import { fetchListings as fetchKleinanzeigen } from "./sources/kleinanzeigen.js";
@@ -69,10 +69,10 @@ async function dispatch(report: Listing[]): Promise<void> {
 
   if (telegramConfigured()) {
     if (report.length > TELEGRAM_INDIVIDUAL_LIMIT) {
-      await notifyText(
-        `📋 ${report.length} Inserate in ${config.regionLabel}` +
-          (emailConfigured() ? " — vollständiger Report per E-Mail." : "."),
-      );
+      // Too many to send one-by-one: announce the count, then deliver the full list as
+      // chunked digest messages so the group sees everything without depending on email.
+      await notifyText(`📋 ${report.length} Inserate in ${config.regionLabel} — vollständige Liste:`);
+      await notifyDigest(report);
     } else {
       for (const l of report) {
         try {

@@ -86,6 +86,45 @@ export async function notifyListing(listing: Listing): Promise<void> {
   await send(formatListing(listing));
 }
 
+/** Telegram rejects any single message longer than this many characters. */
+export const TELEGRAM_MAX_MESSAGE = 4096;
+const DIGEST_SEPARATOR = "\n\n";
+
+/**
+ * Pack pre-formatted listing messages into chunks whose joined text stays within the
+ * per-message cap. A single message longer than the cap still gets its own chunk —
+ * Telegram may reject it, but that beats silently dropping the listing.
+ */
+export function chunkMessages(messages: string[], limit = TELEGRAM_MAX_MESSAGE): string[] {
+  const chunks: string[] = [];
+  let current = "";
+  for (const msg of messages) {
+    if (!current) {
+      current = msg;
+    } else if (current.length + DIGEST_SEPARATOR.length + msg.length <= limit) {
+      current += DIGEST_SEPARATOR + msg;
+    } else {
+      chunks.push(current);
+      current = msg;
+    }
+  }
+  if (current) chunks.push(current);
+  return chunks;
+}
+
+/**
+ * Send the full set of listings to Telegram as a handful of chunked messages, each
+ * holding as many formatted listings as fit under the per-message cap. Used when the
+ * count is too large for one-message-per-listing delivery.
+ */
+export async function notifyDigest(listings: Listing[]): Promise<void> {
+  const chunks = chunkMessages(listings.map(formatListing));
+  for (let i = 0; i < chunks.length; i++) {
+    if (i > 0) await new Promise((r) => setTimeout(r, 1200)); // Telegram rate-limit headroom
+    await send(chunks[i]!);
+  }
+}
+
 /** Send a plain status/text message. */
 export async function notifyText(text: string): Promise<void> {
   await send(escapeHtml(text));
