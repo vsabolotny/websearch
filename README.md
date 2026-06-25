@@ -30,7 +30,7 @@ Each profile in `config.profiles` is run across all sources independently. Each 
 | `src/sources/matchoffice.ts` | MatchOffice office/coworking listings via JSON-LD (no price/area). |
 | `src/sources/tophair.ts` | TOP HAIR Kleinanzeigen board (HTML) — salon-space ads scoped to the region. |
 | `src/state.ts` | Dedup state (`state/seen.json`). |
-| `src/notify/telegram.ts` | Telegram delivery (per-listing). |
+| `src/notify/telegram.ts` | Telegram delivery (per-listing, or chunked digest for large sets). |
 | `src/notify/email.ts` | Email report delivery (digest) via Gmail SMTP. |
 | `src/index.ts` | Orchestrator. |
 
@@ -133,8 +133,10 @@ MODE=full npm start    # report the whole current list (on-demand digest)
   per listing; email sends a single digest. The **first** `new` run seeds `state/seen.json`
   silently (no alert spam); after that only genuinely new listings are reported.
 - **`full`** — every current match, regardless of history. Email sends the whole list; if
-  there are more than 15, Telegram sends a single summary (pointing to the email) instead of
-  spamming. Use this for a catch-up of what's currently on the market.
+  there are more than 15, Telegram sends a count headline followed by the full list as a few
+  chunked digest messages (each packed up to Telegram's 4096-char cap) instead of one message
+  per listing — so the group sees everything without depending on email. Use this for a
+  catch-up of what's currently on the market.
 - With **no** channel configured, `npm start` does a **dry run**: prints what it *would*
   send and does not modify state.
 
