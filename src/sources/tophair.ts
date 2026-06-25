@@ -13,8 +13,10 @@ const BOARD_PATH = "/kleinanzeigen/";
  * TOP HAIR Kleinanzeigen is a hairdresser trade-magazine classifieds board. Unlike the structured
  * portals it is a single WordPress page: every ad is one `.wp-block-stackable-column` with a
  * free-text body and no price/area/location fields. We parse all ads from the server-rendered HTML
- * and keep only the ones that (a) mention a configured region and (b) look like a salon-space offer
- * (rent / buy / take-over / chair rental) rather than equipment-for-sale or a job posting.
+ * and keep only the ones that (a) mention a configured region and (b) offer a room or chair actually
+ * for rent — not a business sale, take-over or whole-lease hand-over, equipment, or a job posting.
+ * Sale/take-over ads were dropped in CL-264's sibling fix CL-267: someone searching for a room to
+ * rent doesn't want "Salon zu verkaufen" / "Nachfolger gesucht" / "Nachmieter gesucht" listings.
  */
 export interface ParseOptions {
   /** Keep only ads whose text contains one of these (substring, case-insensitive). Empty = keep all. */
@@ -26,21 +28,25 @@ export interface ParseOptions {
 const clean = (s: string): string => s.replace(/\s+/g, " ").trim();
 
 const PREMISES =
-  /(friseursalon|frisörsalon|salon|ladenlokal|ladenfläche|laden|gewerbefläche|gewerberaum|gewerbeimmobilie|gewerbe|geschäftsfläche|geschäft|studio|räumlichkeit|behandlungsraum|fläche)/;
-const TRANSFER =
-  /(vermieten|zu mieten|zur miete|verpachten|pacht|übernahme|übernehmen|übergabe|nachfolge|nachfolger|abzugeben|zu verkaufen|zum verkauf|verkauft|ablöse|ablösefrei|teilhaber|investor)/;
-const STRONG = /(stuhlmiete|stuhlmiet|stuhlplatz|nachmieter|salonauflösung|co.?working|verpacht)/;
-const JOB =
-  /(\(m\/w\/d\)|\(w\/m\/d\)|\(m\/w\/x\)|mitarbeiter|verstärkung|teil unseres teams|festanstellung|quereinsteiger|ausbildung|\bazubi\b|minijob|bewerbung|stellenangebot|wir stellen ein|m\/w\/d)/;
+  /(friseursalon|frisörsalon|salon|ladenlokal|ladenfläche|laden|gewerbefläche|gewerberaum|gewerbeimmobilie|gewerbe|geschäftsfläche|geschäft|studio|räumlichkeit|behandlungsraum|\braum\b|fläche|\bstuhl)/;
+// A room or chair actually available to rent — the only thing we alert on (CL-267).
+const RENT =
+  /(stuhlmiete|stuhlmiet|stuhlplatz|zu vermieten|vermietung|vermieten|zu mieten|zur miete|mietraum|mietfläche|untermiete|untervermiet|co.?working|coworking)/;
+// Business sale / take-over / whole-lease hand-over — explicitly excluded (CL-267). A salon sold or
+// passed to a successor (incl. "Nachmieter gesucht": taking over someone's entire lease) is not a
+// room to rent. Checked before RENT so "Stuhlmiete frei, suche Nachmieter" — whose real intent is to
+// hand over the whole salon — is dropped despite the chair mention.
+const SALE =
+  /(übernahme|übernehmen|übergabe|nachfolge|nachfolger|nachmieter|abzugeben|zu verkaufen|zum verkauf|verkauft|verkaufe|ablöse|ablösefrei|verpachten|verpacht|\bpacht\b|teilhaber|investor|salonauflösung)/;
 const EQUIPMENT =
   /(registrierkasse|bedienstuhl|bedienstühle|friseurstuhl|barberstuhl|trockenhaube|haarschneideschere|\bschere\b|waschbecken|waschliege|klimazone|analysegerät|ultraschallgerät|arbeitswagen|friseurwagen|frisierplatz|pumpstuhl|haarverlängerung|\bmöbel\b|\bspiegel\b|\btrockner\b|\bkasse\b|einrichtung|haarfarbe|\bgerät\b)/;
 
 /**
- * Decide whether an ad is a salon-space offer worth alerting on. Ordered so the unambiguous signals
- * win first: an equipment-dominated title drops out, a strong space signal (chair rental / successor
- * tenant) is kept even when the body also reads like a job ad, an employee-wanted ad drops, and
- * otherwise we require a premises noun next to a transfer verb. Heuristic by nature — the board has
- * no structured type — so a few may slip through or be missed.
+ * Decide whether an ad offers a room or chair to rent. Ordered so the unambiguous drops win first:
+ * an equipment-dominated title drops out, any sale / take-over / lease hand-over signal drops the ad
+ * (a business changing hands isn't a rental), and what's left must pair a premises noun with a rental
+ * signal. Heuristic by nature — the board has no structured type — so a few may slip through or be
+ * missed; we err toward dropping ambiguous take-overs rather than alerting on them.
  */
 export function isSalonSpaceAd(title: string, body: string): boolean {
   const t = title.toLowerCase();
@@ -48,9 +54,8 @@ export function isSalonSpaceAd(title: string, body: string): boolean {
   // includes the title, but keep this robust for callers that pass them separately).
   const hay = `${t} ${body.toLowerCase()}`;
   if (EQUIPMENT.test(t) && !PREMISES.test(t)) return false;
-  if (STRONG.test(hay)) return true;
-  if (JOB.test(hay)) return false;
-  return PREMISES.test(hay) && TRANSFER.test(hay);
+  if (SALE.test(hay)) return false;
+  return PREMISES.test(hay) && RENT.test(hay);
 }
 
 /** First "<plz> <city>" mention in free text, e.g. "80687 München". null if none. */

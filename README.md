@@ -28,7 +28,7 @@ Each profile in `config.profiles` is run across all sources independently. Each 
 | `src/sources/kleinanzeigen.ts` | Kleinanzeigen Stuhlmiete/salon listings via HTML. |
 | `src/sources/immosuchmaschine.ts` | immosuchmaschine metasearch (aggregates many portals) via HTML; newest-first. |
 | `src/sources/matchoffice.ts` | MatchOffice office/coworking listings via JSON-LD (no price/area). |
-| `src/sources/tophair.ts` | TOP HAIR Kleinanzeigen board (HTML) — salon-space ads scoped to the region. |
+| `src/sources/tophair.ts` | TOP HAIR Kleinanzeigen board (HTML) — region-scoped room/chair rentals (sales/take-overs filtered out). |
 | `src/state.ts` | Dedup state (`state/seen.json`). |
 | `src/notify/telegram.ts` | Telegram delivery (per-listing, or chunked digest for large sets). |
 | `src/notify/email.ts` | Email report delivery (digest) via Gmail SMTP. |
@@ -71,16 +71,17 @@ npm install
     MatchOffice listings carry no price/area, so the filter caps can't bound them; it ships
     **off** by default (`[]`) and floods office listings if enabled.
   - `tophairEnabled` — when `true`, the TOP HAIR Kleinanzeigen board is searched for this
-    profile, keeping only region-matching **salon-space** ads (sale / takeover / chair rental;
-    equipment and job posts are filtered out). Omitted/`false` = skipped.
+    profile, keeping only region-matching **room/chair rental** ads (Stuhlmiete, Raum zu
+    vermieten); business sales/take-overs ("zu verkaufen", "Übernahme", "Nachfolger/Nachmieter
+    gesucht"), equipment, and job posts are filtered out (CL-267). Omitted/`false` = skipped.
   - `enrichAmenities` — when `true`, Kleinanzeigen detail pages are fetched to fill in area
     and soft amenity flags (window light, transit access, 24-h access). Results are cached in
     `state/kleinanzeigen-cache.json`.
 
   The current **`room`** profile targets spaces ≤ €600 / ≥ 15 m² (IS24 + Kleinanzeigen +
-  immosuchmaschine). A second **`salon`** profile carries the TOP HAIR salon-space board with
-  **no price/area caps** — salon sales/takeovers aren't priced like a monthly room, so relevance
-  comes from the region + salon-space filtering instead.
+  immosuchmaschine). A second **`salon`** profile carries the TOP HAIR board with **no price/area
+  caps** — its room/chair rentals aren't priced like a monthly room, so relevance comes from the
+  region + rental filtering instead (business sales/take-overs are dropped, not alerted on).
 - **`amenityKeywords`** — keyword lists (shared across profiles) that control which
   window / transit / 24-h flags appear on Kleinanzeigen listings in alerts.
 

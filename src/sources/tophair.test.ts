@@ -23,11 +23,21 @@ const COL = (slug: string, title: string, body: string) =>
      </div>
    </div>`;
 
-const SALON_MUC = COL(
+const RENT_MUC = COL(
+  "behandlungsraum-in-muenchen-zu-vermieten",
+  "Behandlungsraum in München zu vermieten",
+  "Schöner Behandlungsraum in unserem Friseursalon in München, Nähe Goetheplatz, 45 m², " +
+    "zu vermieten. Miete 750 € VB. Direkt an der U-Bahn, viel Fenster. 80336 München.",
+);
+const STUHL_MUC = COL(
+  "stuhlmiete-frei-muenchen",
+  "Stuhlmiete frei in München",
+  "In unserem Salon in München ist ein Stuhl frei zu vermieten. Stuhlmiete 490 € pro Monat.",
+);
+const SALE_MUC = COL(
   "friseursalon-in-muenchen-uebernahme",
   "Friseursalon in München – Übernahme ab April",
-  "Gut laufender Friseursalon in München, Nähe Goetheplatz, 45 m², zu übernehmen. " +
-    "Ablöse 9.999 € VB. Direkt an der U-Bahn, viel Fenster. 80336 München.",
+  "Gut laufender Friseursalon in München zu übernehmen. Ablöse 9.999 € VB. 80336 München.",
 );
 const EQUIPMENT_MUC = COL(
   "casio-registrierkasse",
@@ -39,63 +49,60 @@ const JOB_MUC = COL(
   "Friseur (m/w/d) gesucht",
   "Unser Salon in München sucht Verstärkung in Vollzeit. Bewerbung an...",
 );
-const SALON_BERLIN = COL(
-  "friseursalon-berlin-uebernahme",
-  "Friseursalon in Berlin Moabit zu übernehmen",
-  "Etablierter Salon in Berlin, zu verkaufen, 750 € Miete.",
+const RENT_BERLIN = COL(
+  "stuhlmiete-berlin",
+  "Stuhlmiete frei in Berlin Moabit",
+  "In unserem Salon in Berlin ist ein Stuhl zu vermieten, 400 € Miete.",
 );
 const NACHMIETER_MUC = COL(
   "nachmieter-gesucht-muenchen",
   "Nachmieter gesucht München Schwabing-West",
   "Stuhlmiete frei, suche Nachmieter für meinen Salon in München. Auch Ausbildung möglich.",
 );
-const NO_TITLE = COL("leer", "", "Friseursalon in München zu verkaufen.");
+const NO_TITLE = COL("leer", "", "Friseursalon in München zu vermieten.");
 
-const PAGE = [SALON_MUC, EQUIPMENT_MUC, JOB_MUC, SALON_BERLIN, NACHMIETER_MUC].join("\n");
+const PAGE = [RENT_MUC, STUHL_MUC, SALE_MUC, EQUIPMENT_MUC, JOB_MUC, RENT_BERLIN, NACHMIETER_MUC].join("\n");
 
-test("parseListings extracts title, price, area, content-id and the #slug url from a salon ad", () => {
-  const [listing] = parseListings(SALON_MUC, "salon", MUC);
+test("parseListings extracts title, price, area, content-id and the #slug url from a rental ad", () => {
+  const [listing] = parseListings(RENT_MUC, "salon", MUC);
   assert.ok(listing);
   assert.equal(listing.source, "tophair");
   assert.equal(listing.profile, "salon");
-  assert.equal(listing.title, "Friseursalon in München – Übernahme ab April");
-  assert.equal(listing.price, "9.999 €");
-  assert.equal(listing.priceEur, 9999);
+  assert.equal(listing.title, "Behandlungsraum in München zu vermieten");
+  assert.equal(listing.price, "750 €");
+  assert.equal(listing.priceEur, 750);
   assert.equal(listing.areaSqm, 45);
   assert.equal(listing.address, "80336 München");
-  assert.equal(listing.url, "https://www.tophair.de/kleinanzeigen/#friseursalon-in-muenchen-uebernahme");
+  assert.equal(listing.url, "https://www.tophair.de/kleinanzeigen/#behandlungsraum-in-muenchen-zu-vermieten");
   assert.match(listing.id, /^[0-9a-f]{12}$/);
 });
 
 test("the id is derived from content and is stable across runs", () => {
-  const [a] = parseListings(SALON_MUC, "salon", MUC);
-  const [b] = parseListings(SALON_MUC, "salon", MUC);
+  const [a] = parseListings(RENT_MUC, "salon", MUC);
+  const [b] = parseListings(RENT_MUC, "salon", MUC);
   assert.equal(a?.id, b?.id);
 });
 
-test("parseListings keeps München salon-space ads and drops equipment + job ads", () => {
+test("parseListings keeps München rentals and drops sale/take-over, equipment, and job ads", () => {
   const titles = parseListings(PAGE, "salon", MUC).map((l) => l.title);
-  assert.ok(titles.includes("Friseursalon in München – Übernahme ab April"));
-  assert.ok(titles.includes("Nachmieter gesucht München Schwabing-West"));
+  assert.ok(titles.includes("Behandlungsraum in München zu vermieten"), "room rental kept");
+  assert.ok(titles.includes("Stuhlmiete frei in München"), "chair rental kept");
+  assert.ok(!titles.some((t) => t.includes("Übernahme")), "sale/take-over dropped");
+  assert.ok(!titles.some((t) => t.includes("Nachmieter")), "whole-lease hand-over dropped");
   assert.ok(!titles.some((t) => t.includes("Registrierkasse")), "equipment dropped");
   assert.ok(!titles.some((t) => t.includes("(m/w/d)")), "job posting dropped");
 });
 
 test("parseListings drops ads outside the configured region", () => {
   const titles = parseListings(PAGE, "salon", MUC).map((l) => l.title);
-  assert.ok(!titles.some((t) => t.includes("Berlin")), "non-München salon dropped");
-});
-
-test("a strong signal (Nachmieter/Stuhlmiete) is kept even when the body reads job-ish", () => {
-  const [listing] = parseListings(NACHMIETER_MUC, "salon", MUC);
-  assert.equal(listing?.title, "Nachmieter gesucht München Schwabing-West");
+  assert.ok(!titles.some((t) => t.includes("Berlin")), "non-München rental dropped");
 });
 
 test("a 5-digit price without a separator is not misread as a postal-code address", () => {
   const col = COL(
-    "salon-muenchen-ablöse",
-    "Friseursalon in München zu verkaufen",
-    "Schöner Salon in München zu übernehmen, Ablöse 55000 Euro.",
+    "raum-muenchen-vermieten",
+    "Behandlungsraum in München zu vermieten",
+    "Schöner Raum in unserem Salon in München zu vermieten, Miete 55000 Euro.",
   );
   const [listing] = parseListings(col, "salon", MUC);
   assert.equal(listing?.address, null);
@@ -107,13 +114,13 @@ test("parseListings skips a column with no title", () => {
 });
 
 test("parseListings tags amenities from the ad text when keywords are supplied", () => {
-  const [listing] = parseListings(SALON_MUC, "salon", { ...MUC, amenityKeywords: KEYWORDS });
+  const [listing] = parseListings(RENT_MUC, "salon", { ...MUC, amenityKeywords: KEYWORDS });
   assert.equal(listing?.tags?.transit, true);
   assert.equal(listing?.tags?.window, true);
 });
 
 test("parseListings omits tags when no amenity keywords are supplied", () => {
-  const [listing] = parseListings(SALON_MUC, "salon", MUC);
+  const [listing] = parseListings(RENT_MUC, "salon", MUC);
   assert.equal(listing?.tags, undefined);
 });
 
@@ -121,11 +128,17 @@ test("parseListings returns [] when there are no ad columns", () => {
   assert.deepEqual(parseListings("<html><body>kein Treffer</body></html>", "salon", MUC), []);
 });
 
-test("isSalonSpaceAd: equipment title drops, premises+transfer keeps, jobs drop", () => {
-  assert.equal(isSalonSpaceAd("4 Bedienstühle Anthrazit", "günstig abzugeben"), false);
-  assert.equal(isSalonSpaceAd("Friseursalon zu verkaufen", "schöner Salon zu verkaufen"), true);
-  assert.equal(isSalonSpaceAd("Friseur (m/w/d) gesucht", "wir suchen für unseren Salon"), false);
+test("isSalonSpaceAd: keeps room/chair rentals, drops sale/take-over, equipment, and jobs", () => {
+  // Kept: a premises noun paired with a genuine rental signal.
+  assert.equal(isSalonSpaceAd("Behandlungsraum zu vermieten", "schöner Raum in unserem Salon"), true);
   assert.equal(isSalonSpaceAd("Stuhlmiete", "Platz frei in unserem Salon"), true);
+  // Dropped: sale / take-over / whole-lease hand-over — a business changing hands isn't a rental.
+  assert.equal(isSalonSpaceAd("Friseursalon zu verkaufen", "schöner Salon zu verkaufen"), false);
+  assert.equal(isSalonSpaceAd("Friseursalon zur Übernahme", "Ablöse 50.000 €, Nachfolger gesucht"), false);
+  assert.equal(isSalonSpaceAd("Nachmieter gesucht", "Stuhlmiete frei, suche Nachmieter"), false);
+  // Dropped: equipment-for-sale title and employee-wanted ad.
+  assert.equal(isSalonSpaceAd("4 Bedienstühle Anthrazit", "günstig abzugeben"), false);
+  assert.equal(isSalonSpaceAd("Friseur (m/w/d) gesucht", "wir suchen für unseren Salon"), false);
 });
 
 test("fetchListings makes no request and returns [] when tophair is not enabled", async () => {
