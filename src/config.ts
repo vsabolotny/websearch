@@ -8,7 +8,10 @@
  */
 import type { AmenityKeywords } from "./types.js";
 
-/** Price/size caps for one search profile. null = no bound; unknown listing values pass. */
+/**
+ * Price/size caps for one search profile. null = no bound. Unknown area passes; an unknown
+ * price is dropped when maxPriceEur is set (can't confirm within budget), else it passes.
+ */
 export interface FilterCaps {
   maxPriceEur: number | null;
   minAreaSqm: number | null;
