@@ -103,9 +103,10 @@ export const config: SearchConfig = {
       enrichAmenities: true,
     },
     {
-      // Salon-business opportunities from the TOP HAIR board (sale/takeover/chair rental). These
-      // aren't priced like a monthly room, so no caps apply — relevance comes from the adapter's
-      // München + salon-space filtering instead. Only TOP HAIR runs for this profile.
+      // Room/chair rentals from the TOP HAIR board (Stuhlmiete, Raum zu vermieten). Business
+      // sales and take-overs are filtered out by the adapter (CL-267). These aren't priced like a
+      // monthly room, so no caps apply — relevance comes from the adapter's München + rental
+      // filtering instead. Only TOP HAIR runs for this profile.
       key: "salon",
       label: "Salon",
       filters: { maxPriceEur: null, minAreaSqm: null, maxAreaSqm: null },
