@@ -410,6 +410,13 @@
     "3443380228": {
       "areaSqm": null,
       "tags": {}
+    },
+    "3444138610": {
+      "areaSqm": 65,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
     }
   }
 }
