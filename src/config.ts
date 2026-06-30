@@ -117,5 +117,25 @@ export const config: SearchConfig = {
       tophairEnabled: true,
       enrichAmenities: false,
     },
+    {
+      // Storage rooms ("Lagerraum") usable as salon space (CL-270). Same criteria as "room"
+      // — ≤600 € warm, 15–40 m², daylight/transit/24-7 surfaced by amenity enrichment — but a
+      // distinct label and search terms. IS24 "industry" is the "Hallen/Produktion/Lager"
+      // category ("hallStorage" is not a valid mobile-API type); the 600 €/40 m² caps keep it
+      // to small storage rooms, not warehouses. immosuchmaschine is skipped here: it's not
+      // keyword-filterable to storage, so it would just duplicate the room pool under "Lager".
+      key: "storage",
+      label: "Lager",
+      filters: { maxPriceEur: 600, minAreaSqm: 15, maxAreaSqm: 40 },
+      is24RealEstateTypes: ["industry"],
+      kleinanzeigenQueries: [
+        "lagerraum mieten",
+        "lagerraum",
+        "lager raum mieten",
+      ],
+      immosuchmaschineCategories: [],
+      matchofficeCategories: [],
+      enrichAmenities: true,
+    },
   ],
 };
