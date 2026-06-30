@@ -1,10 +1,44 @@
 {
   "keywordsHash": "{\"window\":[\"fenster\",\"tageslicht\",\"lichtdurchflutet\",\"natürliches licht\"],\"transit\":[\"u-bahn\",\"s-bahn\",\"öpnv\",\"öffentliche\",\"bus\",\"tram\",\"straßenbahn\",\"haltestelle\",\"anbindung\",\"verkehrsanbindung\",\"bahnhof\",\"zentral\"],\"alwaysAccessible\":[\"24 stunden\",\"24/7\",\"24h\",\"rund um die uhr\",\"jederzeit zugang\",\"jederzeit zugäng\",\"eigener schlüssel\",\"eigenen schlüssel\",\"schlüssel\",\"wochenende\",\"nachts\"]}",
   "entries": {
+    "1696172268": {
+      "areaSqm": 15,
+      "tags": {
+        "alwaysAccessible": true
+      }
+    },
+    "2302258250": {
+      "areaSqm": null,
+      "tags": {}
+    },
+    "2411492027": {
+      "areaSqm": 4.9,
+      "tags": {
+        "transit": true
+      }
+    },
+    "2411528320": {
+      "areaSqm": 5,
+      "tags": {
+        "transit": true
+      }
+    },
+    "2411538321": {
+      "areaSqm": 10,
+      "tags": {
+        "transit": true
+      }
+    },
     "2850294171": {
       "areaSqm": 53,
       "tags": {
         "window": true,
+        "transit": true
+      }
+    },
+    "2940289473": {
+      "areaSqm": null,
+      "tags": {
         "transit": true
       }
     },
@@ -20,14 +54,39 @@
         "transit": true
       }
     },
+    "3147798019": {
+      "areaSqm": 1,
+      "tags": {
+        "alwaysAccessible": true
+      }
+    },
+    "3148906201": {
+      "areaSqm": null,
+      "tags": {
+        "window": true
+      }
+    },
     "3196363656": {
       "areaSqm": null,
       "tags": {}
+    },
+    "3288570182": {
+      "areaSqm": null,
+      "tags": {
+        "window": true,
+        "alwaysAccessible": true
+      }
     },
     "3304146925": {
       "areaSqm": null,
       "tags": {
         "transit": true
+      }
+    },
+    "3313233577": {
+      "areaSqm": 4014,
+      "tags": {
+        "window": true
       }
     },
     "3336750556": {
@@ -40,6 +99,13 @@
     "3348752004": {
       "areaSqm": null,
       "tags": {}
+    },
+    "3366939570": {
+      "areaSqm": 118,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
     },
     "3378268323": {
       "areaSqm": null,
@@ -64,6 +130,13 @@
     "3384397426": {
       "areaSqm": null,
       "tags": {}
+    },
+    "3387570862": {
+      "areaSqm": 57,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
     },
     "3388120003": {
       "areaSqm": 30,
@@ -204,6 +277,16 @@
       "areaSqm": null,
       "tags": {}
     },
+    "3431557215": {
+      "areaSqm": 194,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3432061030": {
+      "areaSqm": null,
+      "tags": {}
+    },
     "3432270111": {
       "areaSqm": null,
       "tags": {
@@ -281,6 +364,10 @@
         "window": true
       }
     },
+    "3440434381": {
+      "areaSqm": 6,
+      "tags": {}
+    },
     "3440597006": {
       "areaSqm": null,
       "tags": {
@@ -313,6 +400,20 @@
     },
     "3441511999": {
       "areaSqm": null,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3441581480": {
+      "areaSqm": null,
+      "tags": {}
+    },
+    "3441711116": {
+      "areaSqm": null,
+      "tags": {}
+    },
+    "3441757608": {
+      "areaSqm": 5.2,
       "tags": {
         "transit": true
       }
@@ -358,6 +459,13 @@
       "areaSqm": 16,
       "tags": {}
     },
+    "3442292752": {
+      "areaSqm": 100,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
+    },
     "3442315162": {
       "areaSqm": 90,
       "tags": {
@@ -375,6 +483,12 @@
       "areaSqm": null,
       "tags": {
         "transit": true
+      }
+    },
+    "3442811169": {
+      "areaSqm": 72,
+      "tags": {
+        "window": true
       }
     },
     "3442828298": {
@@ -411,6 +525,12 @@
       "areaSqm": null,
       "tags": {}
     },
+    "3443700886": {
+      "areaSqm": null,
+      "tags": {
+        "transit": true
+      }
+    },
     "3444138610": {
       "areaSqm": 65,
       "tags": {
@@ -418,9 +538,72 @@
         "transit": true
       }
     },
+    "3444723807": {
+      "areaSqm": 6,
+      "tags": {}
+    },
     "3445216763": {
       "areaSqm": 21,
       "tags": {}
+    },
+    "3445583429": {
+      "areaSqm": 45,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3446099574": {
+      "areaSqm": 30,
+      "tags": {}
+    },
+    "3446286995": {
+      "areaSqm": 22,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3446921318": {
+      "areaSqm": 4,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3446923625": {
+      "areaSqm": 490,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
+    },
+    "3446936811": {
+      "areaSqm": 200,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
+    },
+    "3446937088": {
+      "areaSqm": 4,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
+    },
+    "3446937105": {
+      "areaSqm": 200,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
+    },
+    "3446937109": {
+      "areaSqm": 200,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
     },
     "3446987456": {
       "areaSqm": null,
