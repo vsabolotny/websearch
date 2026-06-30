@@ -70,6 +70,12 @@
       "areaSqm": null,
       "tags": {}
     },
+    "3235475759": {
+      "areaSqm": 22,
+      "tags": {
+        "transit": true
+      }
+    },
     "3238893672": {
       "areaSqm": 2,
       "tags": {
@@ -634,6 +640,14 @@
       "tags": {
         "transit": true
       }
+    },
+    "3447548792": {
+      "areaSqm": null,
+      "tags": {}
+    },
+    "3447554527": {
+      "areaSqm": null,
+      "tags": {}
     }
   }
 }
