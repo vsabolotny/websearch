@@ -25,7 +25,7 @@ Each profile in `config.profiles` is run across all sources independently. Each 
 | --- | --- |
 | `src/config.ts` | Region, search profiles, and amenity keywords — **edit this first**. |
 | `src/sources/immoscout24.ts` | IS24 commercial listings via the mobile JSON API. |
-| `src/sources/kleinanzeigen.ts` | Kleinanzeigen Stuhlmiete/salon listings via HTML. |
+| `src/sources/kleinanzeigen.ts` | Kleinanzeigen Stuhlmiete/salon listings via HTML — "Gesuche" (wanted/search ads) filtered out (CL-269). |
 | `src/sources/immosuchmaschine.ts` | immosuchmaschine metasearch (aggregates many portals) via HTML; newest-first. |
 | `src/sources/matchoffice.ts` | MatchOffice office/coworking listings via JSON-LD (no price/area). |
 | `src/sources/tophair.ts` | TOP HAIR Kleinanzeigen board (HTML) — region-scoped room/chair rentals (sales/take-overs filtered out). |

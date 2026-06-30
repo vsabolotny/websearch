@@ -37,6 +37,9 @@ export function parseListings(html: string, profileKey: string, radiusKm: number
     const id = a.attr("data-adid");
     const href = a.attr("data-href");
     if (!id || !href) return;
+    // Drop "Gesuche": Kleinanzeigen tags wanted/search ads with a .simpletag reading
+    // "Gesuch". Someone seeking a room is not a room on offer, so it must not alert (CL-269).
+    if (a.find(".simpletag").toArray().some((t) => $(t).text().trim() === "Gesuch")) return;
     const title = (a.find("h2 a.ellipsis").text() || a.find("a.ellipsis").first().text()).trim();
     const priceText = a.find(".aditem-main--middle--price-shipping--price").text().trim();
     const location = a.find(".aditem-main--top--left").text().replace(/\s+/g, " ").trim();
