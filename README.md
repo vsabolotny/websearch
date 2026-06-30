@@ -81,7 +81,11 @@ npm install
   The current **`room`** profile targets spaces ≤ €600 / ≥ 15 m² (IS24 + Kleinanzeigen +
   immosuchmaschine). A second **`salon`** profile carries the TOP HAIR board with **no price/area
   caps** — its room/chair rentals aren't priced like a monthly room, so relevance comes from the
-  region + rental filtering instead (business sales/take-overs are dropped, not alerted on).
+  region + rental filtering instead (business sales/take-overs are dropped, not alerted on). A
+  third **`storage`** profile (label "Lager") searches for storage rooms ("Lagerraum") usable as
+  salon space under the same criteria as `room` plus a 40 m² ceiling (≤ €600 / 15–40 m²): IS24's
+  `industry` ("Hallen/Produktion/Lager") category + Kleinanzeigen Lagerraum queries, with the
+  caps keeping it to small storage rooms rather than warehouses (CL-270).
 - **`amenityKeywords`** — keyword lists (shared across profiles) that control which
   window / transit / 24-h flags appear on Kleinanzeigen listings in alerts.
 
