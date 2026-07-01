@@ -66,6 +66,13 @@
         "window": true
       }
     },
+    "3179414062": {
+      "areaSqm": null,
+      "tags": {
+        "window": true,
+        "alwaysAccessible": true
+      }
+    },
     "3196363656": {
       "areaSqm": null,
       "tags": {}
