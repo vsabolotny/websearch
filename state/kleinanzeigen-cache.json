@@ -744,6 +744,14 @@
         "window": true,
         "transit": true
       }
+    },
+    "3449577062": {
+      "areaSqm": 15,
+      "tags": {
+        "window": true,
+        "transit": true,
+        "alwaysAccessible": true
+      }
     }
   }
 }
