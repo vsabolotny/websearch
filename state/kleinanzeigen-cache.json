@@ -1,6 +1,10 @@
 {
   "keywordsHash": "{\"window\":[\"fenster\",\"tageslicht\",\"lichtdurchflutet\",\"natürliches licht\"],\"transit\":[\"u-bahn\",\"s-bahn\",\"öpnv\",\"öffentliche\",\"bus\",\"tram\",\"straßenbahn\",\"haltestelle\",\"anbindung\",\"verkehrsanbindung\",\"bahnhof\",\"zentral\"],\"alwaysAccessible\":[\"24 stunden\",\"24/7\",\"24h\",\"rund um die uhr\",\"jederzeit zugang\",\"jederzeit zugäng\",\"eigener schlüssel\",\"eigenen schlüssel\",\"schlüssel\",\"wochenende\",\"nachts\"]}",
   "entries": {
+    "942709590": {
+      "areaSqm": 13.8,
+      "tags": {}
+    },
     "1696172268": {
       "areaSqm": 15,
       "tags": {
@@ -119,6 +123,12 @@
       "areaSqm": 4014,
       "tags": {
         "window": true
+      }
+    },
+    "3319341446": {
+      "areaSqm": 80,
+      "tags": {
+        "transit": true
       }
     },
     "3325028518": {
