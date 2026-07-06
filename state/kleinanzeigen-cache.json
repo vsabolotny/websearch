@@ -824,6 +824,52 @@
     "3452014129": {
       "areaSqm": 40,
       "tags": {}
+    },
+    "3452709431": {
+      "areaSqm": null,
+      "tags": {}
+    },
+    "3452727935": {
+      "areaSqm": 4,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3452730108": {
+      "areaSqm": 490,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
+    },
+    "3452744628": {
+      "areaSqm": 200,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
+    },
+    "3452744632": {
+      "areaSqm": 4,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
+    },
+    "3452744767": {
+      "areaSqm": 200,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
+    },
+    "3452744775": {
+      "areaSqm": 200,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
     }
   }
 }
