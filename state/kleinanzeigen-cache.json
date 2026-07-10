@@ -959,6 +959,12 @@
     "3455114586": {
       "areaSqm": null,
       "tags": {}
+    },
+    "3455803516": {
+      "areaSqm": null,
+      "tags": {
+        "window": true
+      }
     }
   }
 }
