@@ -130,6 +130,13 @@
         "transit": true
       }
     },
+    "3245435499": {
+      "areaSqm": 12,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
     "3288570182": {
       "areaSqm": null,
       "tags": {
@@ -916,6 +923,13 @@
       "tags": {
         "transit": true,
         "alwaysAccessible": true
+      }
+    },
+    "3453023101": {
+      "areaSqm": 148,
+      "tags": {
+        "window": true,
+        "transit": true
       }
     },
     "3453532619": {
