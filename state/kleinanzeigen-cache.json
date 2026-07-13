@@ -1003,6 +1003,48 @@
       "tags": {
         "window": true
       }
+    },
+    "3458368676": {
+      "areaSqm": 4,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3458370601": {
+      "areaSqm": 490,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
+    },
+    "3458384313": {
+      "areaSqm": 200,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
+    },
+    "3458384522": {
+      "areaSqm": 4,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
+    },
+    "3458384533": {
+      "areaSqm": 200,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
+    },
+    "3458384545": {
+      "areaSqm": 200,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
     }
   }
 }
