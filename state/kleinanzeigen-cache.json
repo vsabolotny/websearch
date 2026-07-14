@@ -47,6 +47,20 @@
         "alwaysAccessible": true
       }
     },
+    "2699306850": {
+      "areaSqm": 270,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "2699307962": {
+      "areaSqm": 400,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
     "2813847438": {
       "areaSqm": 1002,
       "tags": {
@@ -118,9 +132,21 @@
         "alwaysAccessible": true
       }
     },
+    "3190442641": {
+      "areaSqm": 81,
+      "tags": {
+        "transit": true
+      }
+    },
     "3196363656": {
       "areaSqm": null,
       "tags": {}
+    },
+    "3217633789": {
+      "areaSqm": 81.6,
+      "tags": {
+        "transit": true
+      }
     },
     "3235475759": {
       "areaSqm": 22,
@@ -138,6 +164,19 @@
       "areaSqm": 12,
       "tags": {
         "window": true,
+        "transit": true
+      }
+    },
+    "3270765471": {
+      "areaSqm": 365,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3270765916": {
+      "areaSqm": 365,
+      "tags": {
         "transit": true
       }
     },
@@ -336,9 +375,29 @@
       "areaSqm": 25,
       "tags": {}
     },
+    "3406070716": {
+      "areaSqm": null,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3406500063": {
+      "areaSqm": 170.66,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
     "3408333938": {
       "areaSqm": 11,
       "tags": {
+        "transit": true
+      }
+    },
+    "3408864221": {
+      "areaSqm": 126.79,
+      "tags": {
+        "window": true,
         "transit": true
       }
     },
@@ -392,6 +451,13 @@
         "transit": true
       }
     },
+    "3421572196": {
+      "areaSqm": 160,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
     "3423464318": {
       "areaSqm": null,
       "tags": {
@@ -405,6 +471,12 @@
     "3423961353": {
       "areaSqm": null,
       "tags": {}
+    },
+    "3423963644": {
+      "areaSqm": 850,
+      "tags": {
+        "transit": true
+      }
     },
     "3424356949": {
       "areaSqm": 55,
@@ -874,6 +946,12 @@
         "transit": true
       }
     },
+    "3449019781": {
+      "areaSqm": null,
+      "tags": {
+        "window": true
+      }
+    },
     "3449117877": {
       "areaSqm": 297,
       "tags": {
@@ -986,6 +1064,12 @@
       "areaSqm": null,
       "tags": {}
     },
+    "3454277335": {
+      "areaSqm": null,
+      "tags": {
+        "transit": true
+      }
+    },
     "3454545162": {
       "areaSqm": 24,
       "tags": {
@@ -998,6 +1082,12 @@
         "transit": true
       }
     },
+    "3454855950": {
+      "areaSqm": 45,
+      "tags": {
+        "transit": true
+      }
+    },
     "3454872711": {
       "areaSqm": null,
       "tags": {
@@ -1005,14 +1095,55 @@
         "transit": true
       }
     },
+    "3455058386": {
+      "areaSqm": 154.89,
+      "tags": {
+        "transit": true
+      }
+    },
     "3455114586": {
       "areaSqm": null,
       "tags": {}
+    },
+    "3455533086": {
+      "areaSqm": 116.4,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
     },
     "3455803516": {
       "areaSqm": null,
       "tags": {
         "window": true
+      }
+    },
+    "3455851535": {
+      "areaSqm": 100,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3456592106": {
+      "areaSqm": 108,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3457448697": {
+      "areaSqm": null,
+      "tags": {}
+    },
+    "3457615250": {
+      "areaSqm": null,
+      "tags": {}
+    },
+    "3457882041": {
+      "areaSqm": 100,
+      "tags": {
+        "transit": true
       }
     },
     "3458368676": {
@@ -1062,6 +1193,14 @@
       "tags": {
         "alwaysAccessible": true
       }
+    },
+    "3458573120": {
+      "areaSqm": 424,
+      "tags": {}
+    },
+    "3458642509": {
+      "areaSqm": 1334,
+      "tags": {}
     },
     "3459045504": {
       "areaSqm": null,
