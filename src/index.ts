@@ -1,6 +1,7 @@
 import { config, type SearchConfig, type SearchProfile } from "./config.js";
 import type { Listing, ReportMode } from "./types.js";
 import { applyFilters } from "./filter.js";
+import { applyKeywordFilters } from "./keywords.js";
 import { isNew, loadState, markSeen, saveState } from "./state.js";
 import { notifyDigest, notifyListing, notifyText, telegramConfigured } from "./notify/telegram.js";
 import { sendReport, emailConfigured } from "./notify/email.js";
@@ -89,7 +90,8 @@ async function dispatch(report: Listing[]): Promise<void> {
 async function main(): Promise<void> {
   console.log(`Mode: ${MODE}`);
   const state = await loadState();
-  const listings = await gather();
+  // Keyword-filter before enrichment so we don't spend detail-page fetches on ads we'd drop.
+  const listings = applyKeywordFilters(await gather(), config.profiles);
   await enrichKleinanzeigen(listings);
   const matches = applyFilters(listings, config.profiles);
 

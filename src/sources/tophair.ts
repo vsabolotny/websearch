@@ -21,6 +21,8 @@ const BOARD_PATH = "/kleinanzeigen/";
 export interface ParseOptions {
   /** Keep only ads whose text contains one of these (substring, case-insensitive). Empty = keep all. */
   regionKeywords?: string[];
+  /** Drop ads whose body contains one of these (substring, case-insensitive). Empty = drop none. */
+  excludeKeywords?: string[];
   /** When supplied, tag ads with detected amenities from their text. */
   amenityKeywords?: AmenityKeywords;
 }
@@ -85,8 +87,9 @@ function adId(title: string, body: string): string {
 }
 
 export function parseListings(html: string, profileKey: string, opts: ParseOptions = {}): Listing[] {
-  const { regionKeywords = [], amenityKeywords } = opts;
+  const { regionKeywords = [], excludeKeywords = [], amenityKeywords } = opts;
   const region = regionKeywords.map((k) => k.toLowerCase());
+  const exclude = excludeKeywords.map((k) => k.toLowerCase());
   const $ = cheerio.load(html);
   const out: Listing[] = [];
   $(".wp-block-stackable-column").each((_, el) => {
@@ -98,6 +101,9 @@ export function parseListings(html: string, profileKey: string, opts: ParseOptio
     const body = clean(card.text());
     const hay = body.toLowerCase();
     if (region.length && !region.some((k) => hay.includes(k))) return;
+    // Excluded terms (e.g. "Stuhlmiete" for Salon) disqualify the ad — checked on the full body,
+    // the only place the board carries the term (it rarely sits in the title).
+    if (exclude.length && exclude.some((k) => hay.includes(k))) return;
     if (!isSalonSpaceAd(title, body)) return;
 
     const slug = heading.attr("id");
@@ -130,6 +136,7 @@ export async function fetchListings(profile: SearchProfile, cfg: SearchConfig = 
     } else {
       const listings = parseListings(await res.text(), profile.key, {
         regionKeywords: cfg.tophairRegionKeywords,
+        excludeKeywords: profile.excludeKeywords,
         amenityKeywords: cfg.amenityKeywords,
       });
       for (const l of listings) byId.set(l.id, l);

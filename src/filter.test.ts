@@ -9,7 +9,7 @@ const room: SearchProfile = {
   label: "Raum",
   filters: { maxPriceEur: 600, minAreaSqm: 15, maxAreaSqm: null },
   is24RealEstateTypes: ["store"],
-  kleinanzeigenQueries: [],
+  keywords: [],
   enrichAmenities: true,
 };
 

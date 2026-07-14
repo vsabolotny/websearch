@@ -21,16 +21,30 @@ test("storage profile honors the stated search criteria (≤600 €, 15–40 m²
 
 test("storage profile searches Kleinanzeigen for Lagerraum and IS24 'industry' halls", () => {
   assert.ok(
-    storage!.kleinanzeigenQueries.some((q) => q.includes("lagerraum")),
-    "expected at least one 'lagerraum' Kleinanzeigen query",
+    storage!.keywords.some((q) => q.includes("lagerraum")),
+    "expected at least one 'lagerraum' keyword",
   );
   assert.deepEqual(storage!.is24RealEstateTypes, ["industry"]);
 });
 
-test("Lagerraum Kleinanzeigen queries stay scoped to Munich + 10 km", () => {
-  for (const q of storage!.kleinanzeigenQueries) {
+test("Lagerraum keyword searches stay scoped to Munich + 10 km", () => {
+  for (const q of storage!.keywords) {
     assert.ok(searchUrl(q, config).endsWith("k0l6411r10"), `query "${q}" not Munich-scoped`);
   }
+});
+
+test("the new cross-portal keywords are present on their profiles", () => {
+  const room = config.profiles.find((p) => p.key === "room");
+  const salon = config.profiles.find((p) => p.key === "salon");
+  assert.ok(room!.keywords.includes("gewerbefläche"), "room searches 'gewerbefläche'");
+  assert.ok(storage!.keywords.includes("raumfläche"), "storage searches 'raumfläche'");
+  assert.ok(salon!.keywords.includes("salonfläche"), "salon searches 'salonfläche'");
+});
+
+test("the Salon profile excludes chair rentals (Stuhlmiete)", () => {
+  const salon = config.profiles.find((p) => p.key === "salon");
+  assert.ok(salon!.excludeKeywords?.includes("stuhlmiet"), "salon excludes 'stuhlmiet'");
+  assert.ok(salon!.excludeKeywords?.includes("stuhlplatz"), "salon excludes 'stuhlplatz'");
 });
 
 function listing(over: Partial<Listing>): Listing {
