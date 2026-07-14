@@ -27,8 +27,19 @@ export interface SearchProfile {
   filters: FilterCaps;
   /** IS24 commercial real-estate types to query for this profile. */
   is24RealEstateTypes: string[];
-  /** Kleinanzeigen keyword searches for this profile. */
-  kleinanzeigenQueries: string[];
+  /**
+   * Search terms for this profile. Kleinanzeigen searches each one natively; the
+   * structured portals (IS24, immosuchmaschine, MatchOffice) apply them as a
+   * post-fetch include filter (a listing is dropped unless its text contains one).
+   * TOP HAIR keeps its own salon-space detection instead. See applyKeywordFilters.
+   */
+  keywords: string[];
+  /**
+   * Terms that disqualify a listing for this profile: any listing whose text
+   * contains one of these is dropped, across all portals. Used e.g. to exclude
+   * chair rentals ("Stuhlmiete") from the Salon profile. Empty/undefined = no-op.
+   */
+  excludeKeywords?: string[];
   /** immosuchmaschine categories to query, e.g. ["gewerbeimmobilien-mieten"]. Empty = skip. */
   immosuchmaschineCategories?: string[];
   /** MatchOffice categories to query, e.g. ["buro"]. Empty = skip (office space has no price/area). */
@@ -90,11 +101,12 @@ export const config: SearchConfig = {
       label: "Raum",
       filters: { maxPriceEur: 600, minAreaSqm: 15, maxAreaSqm: null },
       is24RealEstateTypes: ["store"],
-      kleinanzeigenQueries: [
+      keywords: [
         "friseur raum mieten",
         "kosmetik raum",
         "behandlungsraum",
         "gewerberaum friseur",
+        "gewerbefläche",
       ],
       // Newest commercial listings, sorted newest-first; the €600 cap keeps only small/cheap rooms.
       immosuchmaschineCategories: ["gewerbeimmobilien-mieten"],
@@ -103,15 +115,18 @@ export const config: SearchConfig = {
       enrichAmenities: true,
     },
     {
-      // Room/chair rentals from the TOP HAIR board (Stuhlmiete, Raum zu vermieten). Business
-      // sales and take-overs are filtered out by the adapter (CL-267). These aren't priced like a
-      // monthly room, so no caps apply — relevance comes from the adapter's München + rental
-      // filtering instead. Only TOP HAIR runs for this profile.
+      // Salon space from the TOP HAIR board (Raum zu vermieten) plus a "salonfläche" search on
+      // Kleinanzeigen. Business sales and take-overs are filtered out by the TOP HAIR adapter
+      // (CL-267). Chair rentals ("Stuhlmiete") are now excluded too: the user wants whole rooms,
+      // not a single chair — excludeKeywords drops them across all portals, reversing TOP HAIR's
+      // former treatment of Stuhlmiete as a positive signal. These aren't priced like a monthly
+      // room, so no caps apply — relevance comes from the keyword + München + rental filtering.
       key: "salon",
       label: "Salon",
       filters: { maxPriceEur: null, minAreaSqm: null, maxAreaSqm: null },
       is24RealEstateTypes: [],
-      kleinanzeigenQueries: [],
+      keywords: ["salonfläche"],
+      excludeKeywords: ["stuhlmiet", "stuhlplatz"],
       immosuchmaschineCategories: [],
       matchofficeCategories: [],
       tophairEnabled: true,
@@ -128,10 +143,11 @@ export const config: SearchConfig = {
       label: "Lager",
       filters: { maxPriceEur: 600, minAreaSqm: 15, maxAreaSqm: 40 },
       is24RealEstateTypes: ["industry"],
-      kleinanzeigenQueries: [
+      keywords: [
         "lagerraum mieten",
         "lagerraum",
         "lager raum mieten",
+        "raumfläche",
       ],
       immosuchmaschineCategories: [],
       matchofficeCategories: [],

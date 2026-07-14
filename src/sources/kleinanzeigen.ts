@@ -70,7 +70,7 @@ export function parseListings(html: string, profileKey: string, radiusKm: number
  */
 export async function fetchListings(profile: SearchProfile, cfg: SearchConfig = config): Promise<Listing[]> {
   const byId = new Map<string, Listing>();
-  for (const query of profile.kleinanzeigenQueries) {
+  for (const query of profile.keywords) {
     try {
       const res = await fetch(searchUrl(query, cfg), { headers: DE_HEADERS });
       if (!res.ok) {

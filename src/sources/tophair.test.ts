@@ -93,6 +93,13 @@ test("parseListings keeps München rentals and drops sale/take-over, equipment, 
   assert.ok(!titles.some((t) => t.includes("(m/w/d)")), "job posting dropped");
 });
 
+test("excludeKeywords drops chair rentals but keeps whole-room ads", () => {
+  const opts = { ...MUC, excludeKeywords: ["stuhlmiet", "stuhlplatz"] };
+  const titles = parseListings(PAGE, "salon", opts).map((l) => l.title);
+  assert.ok(!titles.includes("Stuhlmiete frei in München"), "Stuhlmiete ad dropped");
+  assert.ok(titles.includes("Behandlungsraum in München zu vermieten"), "whole-room rental kept");
+});
+
 test("parseListings drops ads outside the configured region", () => {
   const titles = parseListings(PAGE, "salon", MUC).map((l) => l.title);
   assert.ok(!titles.some((t) => t.includes("Berlin")), "non-München rental dropped");
