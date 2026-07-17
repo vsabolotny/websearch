@@ -1333,6 +1333,13 @@
       "tags": {
         "transit": true
       }
+    },
+    "3461226759": {
+      "areaSqm": 270000,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
     }
   }
 }
