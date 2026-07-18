@@ -1353,6 +1353,17 @@
         "transit": true,
         "alwaysAccessible": true
       }
+    },
+    "3461728849": {
+      "areaSqm": 20,
+      "tags": {}
+    },
+    "3461742824": {
+      "areaSqm": 75,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
     }
   }
 }
