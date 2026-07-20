@@ -1432,6 +1432,48 @@
       "tags": {
         "transit": true
       }
+    },
+    "3464239537": {
+      "areaSqm": 4,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3464241313": {
+      "areaSqm": 490,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
+    },
+    "3464255749": {
+      "areaSqm": 200,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
+    },
+    "3464255937": {
+      "areaSqm": 4,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
+    },
+    "3464255951": {
+      "areaSqm": 200,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
+    },
+    "3464255960": {
+      "areaSqm": 200,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
     }
   }
 }
