@@ -1505,6 +1505,12 @@
     "3464807016": {
       "areaSqm": null,
       "tags": {}
+    },
+    "3465577814": {
+      "areaSqm": 330,
+      "tags": {
+        "transit": true
+      }
     }
   }
 }
