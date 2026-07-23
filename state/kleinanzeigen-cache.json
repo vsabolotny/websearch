@@ -1548,6 +1548,13 @@
         "window": true,
         "transit": true
       }
+    },
+    "3466219225": {
+      "areaSqm": 14,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
     }
   }
 }
