@@ -184,6 +184,12 @@
         "alwaysAccessible": true
       }
     },
+    "3230995176": {
+      "areaSqm": 43,
+      "tags": {
+        "transit": true
+      }
+    },
     "3235475759": {
       "areaSqm": 22,
       "tags": {
