@@ -1840,6 +1840,10 @@
       "tags": {
         "transit": true
       }
+    },
+    "3473250005": {
+      "areaSqm": null,
+      "tags": {}
     }
   }
 }
