@@ -1224,6 +1224,13 @@
         "alwaysAccessible": true
       }
     },
+    "3450076797": {
+      "areaSqm": 70,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
     "3450469629": {
       "areaSqm": null,
       "tags": {}
