@@ -1923,6 +1923,31 @@
       "tags": {
         "window": true
       }
+    },
+    "3476016609": {
+      "areaSqm": 1675,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3476048158": {
+      "areaSqm": 1675,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
+    },
+    "3476049626": {
+      "areaSqm": 1675,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3476051159": {
+      "areaSqm": 1675,
+      "tags": {
+        "transit": true
+      }
     }
   }
 }
