@@ -1994,6 +1994,13 @@
         "window": true,
         "alwaysAccessible": true
       }
+    },
+    "3476615977": {
+      "areaSqm": null,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
     }
   }
 }
