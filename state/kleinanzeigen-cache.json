@@ -2011,6 +2011,10 @@
         "window": true,
         "transit": true
       }
+    },
+    "3477375265": {
+      "areaSqm": 110,
+      "tags": {}
     }
   }
 }
