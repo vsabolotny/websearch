@@ -2015,6 +2015,20 @@
     "3477375265": {
       "areaSqm": 110,
       "tags": {}
+    },
+    "3477781613": {
+      "areaSqm": 938,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3477794913": {
+      "areaSqm": 105,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
     }
   }
 }
