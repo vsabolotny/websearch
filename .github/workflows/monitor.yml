@@ -23,6 +23,9 @@ concurrency:
 jobs:
   monitor:
     runs-on: ubuntu-latest
+    # A normal run takes well under a minute. Cap it so a hung fetch can never
+    # sit on the `monitor` concurrency group and block later scheduled runs.
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
