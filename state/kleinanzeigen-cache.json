@@ -2078,6 +2078,12 @@
         "transit": true,
         "alwaysAccessible": true
       }
+    },
+    "3481718618": {
+      "areaSqm": 90,
+      "tags": {
+        "transit": true
+      }
     }
   }
 }
