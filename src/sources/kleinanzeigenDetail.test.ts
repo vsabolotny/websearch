@@ -27,3 +27,9 @@ test("parseAreaFromText treats a dot with 1-2 digits as a decimal, not thousands
   assert.equal(parseAreaFromText("1.5 m²"), 1.5);
   assert.equal(parseAreaFromText("1.500 m²"), 1500);
 });
+
+test("ignores implausibly large area values", () => {
+  // Seen live: a "109m2 Lagerfläche" ad whose page text yielded 270000 m². A bogus area
+  // silently pushes good listings out through the profile's area caps, so drop it instead.
+  assert.equal(parseAreaFromText("Fläche 270.000 m² im Objekt"), null);
+});

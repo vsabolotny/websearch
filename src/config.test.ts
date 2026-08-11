@@ -69,6 +69,10 @@ test("storage filter adheres to the 15–40 m² / 600 € criteria", () => {
   assert.ok(!kept(listing({ areaSqm: 45 })), "a 45 m² room exceeds the 40 m² cap");
   assert.ok(!kept(listing({ areaSqm: 10 })), "a 10 m² room is below the 15 m² floor");
   assert.ok(!kept(listing({ priceEur: 700 })), "a 700 € room exceeds the 600 € cap");
-  assert.ok(!kept(listing({ priceEur: null })), "an unpriced room can't be confirmed within budget");
+  // Unpriced ads are no longer dropped outright: small sublets routinely omit a price, and
+  // CL-264's blanket rule cost us too many of them. Area now carries the decision instead.
+  assert.ok(kept(listing({ priceEur: null, areaSqm: 30 })), "an unpriced room in the size range is kept");
+  assert.ok(!kept(listing({ priceEur: null, areaSqm: null })), "unpriced with no area has nothing to judge on");
+  assert.ok(!kept(listing({ priceEur: null, areaSqm: 45 })), "unpriced beyond the size cap stays out");
   assert.ok(kept(listing({ areaSqm: null })), "unknown area still passes (filled by enrichment)");
 });

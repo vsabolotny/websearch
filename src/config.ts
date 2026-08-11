@@ -99,7 +99,12 @@ export const config: SearchConfig = {
     {
       key: "room",
       label: "Raum",
-      filters: { maxPriceEur: 600, minAreaSqm: 15, maxAreaSqm: null },
+      // Retuned 2026-08-11 after four silent days: at 600 €/15 m² nothing had matched since
+      // 06-08 while ~60 unseen ads per run were being dropped, nearly all on price. A München
+      // treatment room goes for 850–1200 €, and such rooms are typically 12–14 m² — the old
+      // floor sat above the size of the thing being searched for (it rejected a 350 €/14 m²
+      // Behandlungsraum). These bounds match the market rather than the original budget guess.
+      filters: { maxPriceEur: 1200, minAreaSqm: 10, maxAreaSqm: null },
       is24RealEstateTypes: ["store"],
       keywords: [
         "friseur raum mieten",
@@ -107,6 +112,21 @@ export const config: SearchConfig = {
         "behandlungsraum",
         "gewerberaum friseur",
         "gewerbefläche",
+      ],
+      // Business sales, take-overs and leaseholds are not rooms to rent. The 600 € cap used to
+      // hide them by accident; at 1200 € they surface, so exclude them explicitly — the same
+      // intent as the TOP HAIR adapter's SALE regex (CL-267), applied to this profile's titles.
+      excludeKeywords: [
+        "kapitalanlage",
+        "nachfolger",
+        "nachmieter",
+        "abzugeben",
+        "zu verkaufen",
+        "zum verkauf",
+        "ablöse",
+        "übernahme",
+        "pacht",
+        "verpachtung",
       ],
       // Newest commercial listings, sorted newest-first; the €600 cap keeps only small/cheap rooms.
       immosuchmaschineCategories: ["gewerbeimmobilien-mieten"],
