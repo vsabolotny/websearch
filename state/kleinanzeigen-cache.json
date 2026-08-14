@@ -65,6 +65,12 @@
         "transit": true
       }
     },
+    "2756754644": {
+      "areaSqm": null,
+      "tags": {
+        "transit": true
+      }
+    },
     "2813847438": {
       "areaSqm": 1002,
       "tags": {
@@ -247,6 +253,21 @@
         "alwaysAccessible": true
       }
     },
+    "3298251917": {
+      "areaSqm": 90,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3299233841": {
+      "areaSqm": 80.7,
+      "tags": {
+        "window": true,
+        "transit": true,
+        "alwaysAccessible": true
+      }
+    },
     "3304146925": {
       "areaSqm": null,
       "tags": {
@@ -288,6 +309,13 @@
     "3325472805": {
       "areaSqm": null,
       "tags": {}
+    },
+    "3326020008": {
+      "areaSqm": 60,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
     },
     "3328986353": {
       "areaSqm": 3,
@@ -372,6 +400,10 @@
         "transit": true
       }
     },
+    "3354125867": {
+      "areaSqm": null,
+      "tags": {}
+    },
     "3355167700": {
       "areaSqm": null,
       "tags": {}
@@ -427,6 +459,19 @@
       "areaSqm": 69,
       "tags": {
         "window": true
+      }
+    },
+    "3382336079": {
+      "areaSqm": 65,
+      "tags": {
+        "window": true
+      }
+    },
+    "3382432464": {
+      "areaSqm": 90,
+      "tags": {
+        "window": true,
+        "transit": true
       }
     },
     "3382594157": {
@@ -579,6 +624,13 @@
     "3414514308": {
       "areaSqm": 868,
       "tags": {}
+    },
+    "3414617755": {
+      "areaSqm": null,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
     },
     "3415346543": {
       "areaSqm": null,
@@ -832,6 +884,13 @@
     "3438566997": {
       "areaSqm": 129.93,
       "tags": {
+        "transit": true
+      }
+    },
+    "3438617025": {
+      "areaSqm": 4.22,
+      "tags": {
+        "window": true,
         "transit": true
       }
     },
@@ -1535,6 +1594,13 @@
         "transit": true
       }
     },
+    "3460144919": {
+      "areaSqm": 5,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
     "3460258545": {
       "areaSqm": 50,
       "tags": {
@@ -1550,6 +1616,13 @@
     "3460272180": {
       "areaSqm": 55,
       "tags": {
+        "transit": true
+      }
+    },
+    "3460387545": {
+      "areaSqm": 58.46,
+      "tags": {
+        "window": true,
         "transit": true
       }
     },
@@ -1878,6 +1951,19 @@
       "areaSqm": null,
       "tags": {}
     },
+    "3471852493": {
+      "areaSqm": 52,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3471852552": {
+      "areaSqm": 44,
+      "tags": {
+        "transit": true
+      }
+    },
     "3471883247": {
       "areaSqm": 270000,
       "tags": {
@@ -1892,6 +1978,12 @@
         "transit": true
       }
     },
+    "3471986434": {
+      "areaSqm": 81.39,
+      "tags": {
+        "transit": true
+      }
+    },
     "3472051689": {
       "areaSqm": null,
       "tags": {
@@ -1901,6 +1993,13 @@
     "3472302023": {
       "areaSqm": 183,
       "tags": {
+        "transit": true
+      }
+    },
+    "3472464147": {
+      "areaSqm": 75,
+      "tags": {
+        "window": true,
         "transit": true
       }
     },
@@ -2116,6 +2215,20 @@
         "transit": true
       }
     },
+    "3483400641": {
+      "areaSqm": 79,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3483420008": {
+      "areaSqm": 33,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
     "3483609290": {
       "areaSqm": 15,
       "tags": {
@@ -2125,6 +2238,12 @@
     "3483683730": {
       "areaSqm": null,
       "tags": {}
+    },
+    "3483717273": {
+      "areaSqm": 121,
+      "tags": {
+        "transit": true
+      }
     }
   }
 }
