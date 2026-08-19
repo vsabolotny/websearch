@@ -102,6 +102,12 @@
         "window": true
       }
     },
+    "3013194172": {
+      "areaSqm": 58,
+      "tags": {
+        "transit": true
+      }
+    },
     "3071988365": {
       "areaSqm": 18,
       "tags": {
@@ -114,6 +120,10 @@
         "transit": true,
         "alwaysAccessible": true
       }
+    },
+    "3118786823": {
+      "areaSqm": null,
+      "tags": {}
     },
     "3124356922": {
       "areaSqm": null,
@@ -246,6 +256,13 @@
         "transit": true
       }
     },
+    "3278894848": {
+      "areaSqm": 37,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
     "3288570182": {
       "areaSqm": null,
       "tags": {
@@ -330,6 +347,13 @@
         "transit": true
       }
     },
+    "3330686551": {
+      "areaSqm": 60,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
     "3331428804": {
       "areaSqm": 112,
       "tags": {
@@ -407,6 +431,13 @@
     "3355167700": {
       "areaSqm": null,
       "tags": {}
+    },
+    "3355609839": {
+      "areaSqm": 81.33,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
     },
     "3356134078": {
       "areaSqm": null,
@@ -540,6 +571,13 @@
         "transit": true
       }
     },
+    "3393698175": {
+      "areaSqm": 60.62,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
     "3394055762": {
       "areaSqm": 115.7,
       "tags": {
@@ -570,6 +608,12 @@
     "3404884072": {
       "areaSqm": 25,
       "tags": {}
+    },
+    "3405181843": {
+      "areaSqm": 56.69,
+      "tags": {
+        "transit": true
+      }
     },
     "3406070716": {
       "areaSqm": null,
@@ -643,6 +687,20 @@
       "tags": {
         "window": true,
         "transit": true
+      }
+    },
+    "3418240690": {
+      "areaSqm": 81,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3418571333": {
+      "areaSqm": 134,
+      "tags": {
+        "window": true,
+        "transit": true,
+        "alwaysAccessible": true
       }
     },
     "3418903532": {
@@ -923,6 +981,14 @@
       "areaSqm": 25,
       "tags": {
         "transit": true
+      }
+    },
+    "3439356108": {
+      "areaSqm": 78,
+      "tags": {
+        "window": true,
+        "transit": true,
+        "alwaysAccessible": true
       }
     },
     "3440131912": {
@@ -1747,6 +1813,12 @@
         "transit": true
       }
     },
+    "3464751141": {
+      "areaSqm": null,
+      "tags": {
+        "transit": true
+      }
+    },
     "3464807016": {
       "areaSqm": null,
       "tags": {}
@@ -1941,6 +2013,12 @@
       "areaSqm": null,
       "tags": {}
     },
+    "3471286461": {
+      "areaSqm": 265,
+      "tags": {
+        "transit": true
+      }
+    },
     "3471327559": {
       "areaSqm": null,
       "tags": {
@@ -2107,8 +2185,22 @@
         "alwaysAccessible": true
       }
     },
+    "3476157882": {
+      "areaSqm": null,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
     "3476199042": {
       "areaSqm": 85,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3476363418": {
+      "areaSqm": null,
       "tags": {
         "window": true,
         "transit": true
@@ -2273,6 +2365,44 @@
     "3487508528": {
       "areaSqm": 490,
       "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
+    },
+    "3487694923": {
+      "areaSqm": 6,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3487738043": {
+      "areaSqm": 75,
+      "tags": {
+        "window": true
+      }
+    },
+    "3487743864": {
+      "areaSqm": null,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3487942298": {
+      "areaSqm": 137,
+      "tags": {}
+    },
+    "3488392155": {
+      "areaSqm": 40,
+      "tags": {}
+    },
+    "3488398249": {
+      "areaSqm": 40,
+      "tags": {}
+    },
+    "3488550249": {
+      "areaSqm": 10,
+      "tags": {
+        "window": true,
         "transit": true,
         "alwaysAccessible": true
       }
