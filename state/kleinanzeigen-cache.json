@@ -539,6 +539,12 @@
         "transit": true
       }
     },
+    "3388074740": {
+      "areaSqm": 45,
+      "tags": {
+        "transit": true
+      }
+    },
     "3388120003": {
       "areaSqm": 30,
       "tags": {
@@ -661,6 +667,13 @@
       "areaSqm": null,
       "tags": {
         "window": true
+      }
+    },
+    "3414320479": {
+      "areaSqm": 68,
+      "tags": {
+        "window": true,
+        "transit": true
       }
     },
     "3414426010": {
@@ -2427,6 +2440,12 @@
       "areaSqm": null,
       "tags": {
         "window": true,
+        "transit": true
+      }
+    },
+    "3489092249": {
+      "areaSqm": null,
+      "tags": {
         "transit": true
       }
     }
