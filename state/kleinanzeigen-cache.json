@@ -230,6 +230,12 @@
         "transit": true
       }
     },
+    "3245435298": {
+      "areaSqm": null,
+      "tags": {
+        "transit": true
+      }
+    },
     "3245435499": {
       "areaSqm": 12,
       "tags": {
@@ -262,6 +268,13 @@
     },
     "3278894848": {
       "areaSqm": 37,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3280813420": {
+      "areaSqm": 40,
       "tags": {
         "window": true,
         "transit": true
@@ -573,6 +586,12 @@
       "areaSqm": 70,
       "tags": {}
     },
+    "3389606575": {
+      "areaSqm": 166.5,
+      "tags": {
+        "transit": true
+      }
+    },
     "3389809381": {
       "areaSqm": 60,
       "tags": {
@@ -716,6 +735,13 @@
     },
     "3415381319": {
       "areaSqm": 47.75,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3416256509": {
+      "areaSqm": 47,
       "tags": {
         "window": true,
         "transit": true
@@ -1868,6 +1894,12 @@
       "areaSqm": null,
       "tags": {}
     },
+    "3465192343": {
+      "areaSqm": 75,
+      "tags": {
+        "transit": true
+      }
+    },
     "3465319959": {
       "areaSqm": 81,
       "tags": {
@@ -1930,6 +1962,12 @@
       "areaSqm": 417.48,
       "tags": {
         "window": true,
+        "transit": true
+      }
+    },
+    "3467300568": {
+      "areaSqm": 30,
+      "tags": {
         "transit": true
       }
     },
@@ -2304,6 +2342,13 @@
         "transit": true
       }
     },
+    "3478461079": {
+      "areaSqm": 61,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
     "3478521669": {
       "areaSqm": 115,
       "tags": {
@@ -2534,6 +2579,39 @@
       "areaSqm": 6,
       "tags": {
         "alwaysAccessible": true
+      }
+    },
+    "3490372072": {
+      "areaSqm": 58,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3490380330": {
+      "areaSqm": null,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3490445658": {
+      "areaSqm": null,
+      "tags": {
+        "window": true,
+        "alwaysAccessible": true
+      }
+    },
+    "3490452279": {
+      "areaSqm": 74.67,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3490453394": {
+      "areaSqm": 61.33,
+      "tags": {
+        "window": true,
+        "transit": true
       }
     }
   }
