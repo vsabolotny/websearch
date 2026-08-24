@@ -2788,6 +2788,13 @@
         "window": true,
         "transit": true
       }
+    },
+    "3493462722": {
+      "areaSqm": null,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
     }
   }
 }
