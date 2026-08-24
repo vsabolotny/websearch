@@ -2795,6 +2795,22 @@
         "window": true,
         "transit": true
       }
+    },
+    "3493538599": {
+      "areaSqm": 56,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3493580695": {
+      "areaSqm": 1000,
+      "tags": {}
+    },
+    "3493602295": {
+      "areaSqm": 16.2,
+      "tags": {
+        "transit": true
+      }
     }
   }
 }
