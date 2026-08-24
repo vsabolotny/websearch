@@ -2824,6 +2824,20 @@
       "tags": {
         "transit": true
       }
+    },
+    "3494000728": {
+      "areaSqm": 4,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3494001900": {
+      "areaSqm": 490,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
     }
   }
 }
