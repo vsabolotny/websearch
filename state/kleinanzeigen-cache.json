@@ -141,6 +141,13 @@
         "transit": true
       }
     },
+    "3073923597": {
+      "areaSqm": 42,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
     "3108222975": {
       "areaSqm": 78,
       "tags": {
@@ -2957,6 +2964,29 @@
     },
     "3495055399": {
       "areaSqm": 33,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3495192174": {
+      "areaSqm": null,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3495196551": {
+      "areaSqm": 180,
+      "tags": {
+        "window": true
+      }
+    },
+    "3495217458": {
+      "areaSqm": 90,
+      "tags": {}
+    },
+    "3495228383": {
+      "areaSqm": 39.17,
       "tags": {
         "window": true,
         "transit": true
