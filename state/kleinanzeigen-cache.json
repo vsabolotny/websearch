@@ -3281,6 +3281,17 @@
     "3498451903": {
       "areaSqm": null,
       "tags": {}
+    },
+    "3499642853": {
+      "areaSqm": 10,
+      "tags": {}
+    },
+    "3499666913": {
+      "areaSqm": 490,
+      "tags": {
+        "transit": true,
+        "alwaysAccessible": true
+      }
     }
   }
 }
