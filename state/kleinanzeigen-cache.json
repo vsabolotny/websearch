@@ -486,6 +486,26 @@
         "transit": true
       }
     },
+    "3341675555": {
+      "areaSqm": 35.5,
+      "tags": {
+        "transit": true
+      }
+    },
+    "3341675761": {
+      "areaSqm": 83,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
+    "3341675916": {
+      "areaSqm": 27,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
     "3341684334": {
       "areaSqm": 60,
       "tags": {
@@ -1580,6 +1600,13 @@
         "transit": true
       }
     },
+    "3448086379": {
+      "areaSqm": 130,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
     "3448097806": {
       "areaSqm": 20,
       "tags": {
@@ -2433,6 +2460,13 @@
         "transit": true
       }
     },
+    "3472683051": {
+      "areaSqm": 5.88,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
+    },
     "3473250005": {
       "areaSqm": null,
       "tags": {}
@@ -3241,6 +3275,10 @@
       }
     },
     "3498233440": {
+      "areaSqm": null,
+      "tags": {}
+    },
+    "3498451903": {
       "areaSqm": null,
       "tags": {}
     }
