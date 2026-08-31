@@ -3292,6 +3292,23 @@
         "transit": true,
         "alwaysAccessible": true
       }
+    },
+    "3500280899": {
+      "areaSqm": 2.8,
+      "tags": {
+        "window": true
+      }
+    },
+    "3500287605": {
+      "areaSqm": 50,
+      "tags": {}
+    },
+    "3500324746": {
+      "areaSqm": 4,
+      "tags": {
+        "window": true,
+        "transit": true
+      }
     }
   }
 }
